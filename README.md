@@ -3,6 +3,7 @@
 ## Open Endpoints
 
 * [Login](docs/login.md) : `POST /api/login/`
+* [Create Account](docs/user_add.md) : `POST /api/user/`
 * [Show Articles](docs/article_show.md) : `GET /api/articles/`
 * [Show Article](docs/article_show.md) : `GET /api/article/:id_article`
 
@@ -20,6 +21,6 @@
 
 ### Current User related
 
-* [Show Info](docs/user_show.md) : `POST /api/user/`
+* [Show Info](docs/user_show.md) : `GET /api/user/`
 * [Delete self](docs/user_delete.md) : `DELETE /api/user/`
 * [Update info](docs/user_update.md) : `PUT /api/user/`
