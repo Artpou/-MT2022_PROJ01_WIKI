@@ -1,29 +1,39 @@
-# Article
+# Show Article
 
-Used to create an article.
+Used to show an article.
 
-**URL** : `/api/articles/`
+**URL** : `/api/articles/:id_article`
 
-**Method** : `POST`
+**Method** : `GET`
 
-**Auth required** : YES
+**Auth required** : NO
 
-**Data constraints**
-
-```json
-{
-    "titre_article": "[title of the article]",
-    "content_article": "[content of the article]",
-    "id_user": "[id of the current user]"
-}
-```
+**Data constraints** : {}
 
 ## Success Response
 
-**Code** : `201 CREATED`
+**Condition** : If article exists.
 
-## Error Response
+**Code** : `200 OK`
 
-**Condition** : If any field is missed
+**Content Example** :
 
-**Code** : `400 BAD REQUEST`
+```json
+    {
+        "article": {
+            "id": 123,
+            "title_article": "I am the article",
+            "content_article": "This is my content",
+            "date_article": "2020-10-12 11:11:11",
+            "id_user": 11
+        }
+    }
+```
+
+## Error Response :
+
+**Condition** : If article does not exist.
+
+**Code** : `404 NOT FOUND`
+
+**Content** : `{}`
