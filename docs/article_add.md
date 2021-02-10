@@ -14,7 +14,7 @@ Used to create an article.
 {
     "title_article": "[title of the article]",
     "content_article": "[content of the article]",
-    "id_user": "[id of the current user]"
+    "id_user": [id of the current user]
 }
 ```
 
