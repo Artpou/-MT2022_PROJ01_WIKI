@@ -12,7 +12,7 @@ Used to update a comment.
 
 ```json
 {
-    "content_comment": "This is the content of the comment"
+    "content_comment": "[content of the comment]"
 }
 ```
 
