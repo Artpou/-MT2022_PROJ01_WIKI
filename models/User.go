@@ -13,8 +13,8 @@ type User struct {
 	UpdatedAt time.Time
 }
 
-func create(pseudo string, password string) {
-	return &User{
+func create(pseudo string, password string) User {
+	return User{
 		Pseudo:   pseudo,
 		Password: password,
 	}

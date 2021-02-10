@@ -10,4 +10,5 @@ func main() {
 	if err != nil {
 		panic("failed to connect database")
 	}
+	v.test()
 }
