@@ -8,7 +8,7 @@ Used to create a comment.
 
 **Auth required** : YES
 
-**Data constraints**
+**Data constraints** :
 
 ```json
 {
