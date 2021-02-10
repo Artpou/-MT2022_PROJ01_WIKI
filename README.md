@@ -3,7 +3,7 @@
 ## Open Endpoints
 
 * [Login](docs/login.md) : `POST /api/login/`
-* [Create Account](docs/user_add.md) : `POST /api/users/`
+* [Create User](docs/user_add.md) : `POST /api/users/`
 * [Show Article](docs/article_show.md) : `GET /api/articles/:id_article`
 * [Show Articles](docs/articles_show.md) : `GET /api/articles/`
 * [Show Comment](docs/comment_show.md) : `GET /api/comments/:id_comment`
