@@ -2,17 +2,21 @@
 
 Used to show all comments for an article.
 
-**URL** : `/api/comments/:id_article`
+**URL** : `/api/comments/`
 
 **Method** : `GET`
 
 **Auth required** : NO
 
-**Data constraints** : {}
+**Data constraints** :
+
+{
+    "id_article": "[id of the article you want the comments from]"
+}
 
 ## Success Response
 
-**Condition** : If article exists.
+**Condition** : If article is not missing and exists.
 
 **Code** : `200 OK`
 
