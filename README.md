@@ -12,11 +12,11 @@
 
 * [Add Article](docs/article_add.md) : `POST /api/article/`
 * [Delete Article](docs/article_delete.md) : `DELETE /api/article/`
-* [Modify Article](docs/article_update.md) : `PUT /api/article/`
+* [Update Article](docs/article_update.md) : `PUT /api/article/`
 
 * [Add Comment](docs/comment_add.md) : `POST /api/comments/`
 * [Delete Comment](docs/comment_delete.md) : `DELETE /api/comments/`
-* [Modify Comment](docs/comment_update.md) : `PUT /api/comments/`
+* [Update Comment](docs/comment_update.md) : `PUT /api/comments/`
 
 ### Current User related
 
