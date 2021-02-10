@@ -12,7 +12,7 @@ Used to delete a comment.
 
 **Permissions required** :
 
-User is in relation to the Article requested:
+User is in relation to the comment requested:
 
 * Owner `OO`
 
@@ -40,7 +40,7 @@ User is in relation to the Article requested:
 
 ## Or
 
-**Condition** : If Article exists but Authorized User does not have required permissions.
+**Condition** : If comment exists but Authorized User does not have required permissions.
 
 **Code** : `403 FORBIDDEN`
 
