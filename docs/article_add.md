@@ -12,7 +12,7 @@ Used to create an article.
 
 ```json
 {
-    "titre_article": "[title of the article]",
+    "title_article": "[title of the article]",
     "content_article": "[content of the article]",
     "id_user": "[id of the current user]"
 }
@@ -30,4 +30,19 @@ Used to create an article.
 
 **Code** : `400 BAD REQUEST`
 
+**Content example**
+
+```json
+{
+    "title_article": [
+        "This field is required."
+    ]
+}
+```
 ### Or
+
+**Condition** : If authentication failed.
+
+**Code** : `403 FORBIDDEN`
+
+**Content** : {}
