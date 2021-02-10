@@ -23,6 +23,29 @@ Used to create/register a User.
 
 ## Error Response
 
-**Condition** : If 'username' is already taken, or password length is inferior to 6, or any field is missing.
+**Condition** : If any field is missing.
 
 **Code** : `400 BAD REQUEST`
+
+**Content example**
+
+```json
+{
+    "username": [
+        "This field is required."
+    ]
+}
+```
+
+### Or
+
+
+**Condition** : If username is already taken.
+
+**Code** : `400 BAD REQUEST`
+
+**Content example** :
+
+```json
+{"detail": "This username is already taken."}
+```
