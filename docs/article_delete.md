@@ -8,17 +8,17 @@ Used to delete an article.
 
 **Auth required** : YES
 
-**Data constraints** :
+**Data constraints** : {}
 
-```json
-{
-    "id_user": "[current user id]"
-}
-```
+**Permissions required** :
+
+User is in relation to the article requested:
+
+* Owner `OO`
 
 ## Success Response
 
-**Condition** : If Article exists and current user is the author of the article.
+**Condition** : If article exists and current user is the owner of the article.
 
 **Code** : `200 OK`
 
@@ -26,21 +26,13 @@ Used to delete an article.
 
 **Condition** : If 'id_user' field is missing.
 
-**Code** : `400 BAD REQUEST`
+**Code** : `404 NOT FOUND`
 
-**Content** :
-
-```json
-{
-    "id_user": [
-        "This field is required."
-    ]
-}
-```
+**Content** : {}
 
 ## Or
 
-**Condition** : If user is not the author of the article.
+**Condition** : If article exists but Authorized User does not have required permissions.
 
 **Code** : `403 FORBIDDEN`
 
