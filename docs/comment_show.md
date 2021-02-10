@@ -1,28 +1,39 @@
-# Login
+# Show Comment
 
-Used to collect a Token for a registered User.
+Used to show a comment.
 
-**URL** : `/api/login/`
+**URL** : `/api/comments/:id_comment`
 
-**Method** : `POST`
+**Method** : `GET`
 
 **Auth required** : NO
 
-**Data constraints**
-
-```json
-{
-    "username": "[valid email address]",
-    "password": "[password in plain text]"
-}
-```
+**Data constraints** : {}
 
 ## Success Response
 
+**Condition** : If comment exists.
+
 **Code** : `200 OK`
 
-## Error Response
+**Content Example** :
 
-**Condition** : If 'username' and 'password' combination is wrong.
+```json
+    {
+        "comment": {
+            "id": 53,
+            "content_comment": "This is the content of the comment",
+            "date_comment": "2020-10-12 11:11:11",
+            "id_user": 15
+            "id_article" : 123
+        }
+    }
+```
 
-**Code** : `400 BAD REQUEST`
+## Error Response :
+
+**Condition** : If comment does not exist.
+
+**Code** : `404 NOT FOUND`
+
+**Content** : `{}`
