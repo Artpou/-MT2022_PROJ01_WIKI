@@ -19,6 +19,8 @@ Used to create/register a User.
 
 ## Success Response
 
+**Condition** : If no fields are missing.
+
 **Code** : `201 CREATED`
 
 ## Error Response
