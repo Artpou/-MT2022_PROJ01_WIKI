@@ -8,13 +8,13 @@ Used to delete a comment.
 
 **Auth required** : YES
 
-**Data constraints** :
+**Data constraints** : {}
 
-```json
-{
-    "id_user": "[current user id]"
-}
-```
+**Permissions required** :
+
+User is in relation to the Article requested:
+
+* Owner `OO`
 
 ## Success Response
 
@@ -40,7 +40,7 @@ Used to delete a comment.
 
 ## Or
 
-**Condition** : If user is not the author of the comment.
+**Condition** : If Article exists but Authorized User does not have required permissions.
 
 **Code** : `403 FORBIDDEN`
 
