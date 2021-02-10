@@ -57,10 +57,9 @@ User is in relation to the article requested:
 
 ```json
 {
-{
     "content_article": [
         "This field is required."
     ]
 }
-}
+
 ```
