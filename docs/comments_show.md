@@ -63,7 +63,7 @@ Used to show all comments for an article.
 
 ### Or
 
-**Condition** : If 'article' field is missing.
+**Condition** : If 'id_article' field is missing.
 
 **Code** : `400 BAD REQUEST`
 
