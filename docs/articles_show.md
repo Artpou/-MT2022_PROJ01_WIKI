@@ -25,6 +25,7 @@ Used to show all articles.
             "id": 123,
             "title_article": "I am the first article",
             "content_article": "This is my content",
+            "date_article": "2020-10-12 11:11:11",
             "id_user": 11
         }
     },
@@ -33,6 +34,7 @@ Used to show all articles.
             "id": 124,
             "title_article": "I am the second article",
             "content_article": "This is my content",
+            "date_article": "2020-11-12 09:09:09",
             "id_user": 18
         }
     },
@@ -41,6 +43,7 @@ Used to show all articles.
             "id": 125,
             "title_article": "I am the third article",
             "content_article": "This is my content",
+            "date_article": "2020-12-12 10:10:10",
             "id_user": 18
         }
     }
