@@ -60,3 +60,19 @@ Used to show all comments for an article.
 **Code** : `404 NOT FOUND`
 
 **Content** : {}
+
+### Or
+
+**Condition** : If article field is missing.
+
+**Code** : `400 BAD REQUEST`
+
+**Content** : 
+ 
+```json
+{
+    "id_article": [
+        "This field is required."
+    ]
+}
+```
