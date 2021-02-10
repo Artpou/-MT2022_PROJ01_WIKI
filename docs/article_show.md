@@ -1,28 +1,29 @@
-# Login
+# Article
 
-Used to collect a Token for a registered User.
+Used to create an article.
 
-**URL** : `/api/login/`
+**URL** : `/api/articles/`
 
 **Method** : `POST`
 
-**Auth required** : NO
+**Auth required** : YES
 
 **Data constraints**
 
 ```json
 {
-    "username": "[valid email address]",
-    "password": "[password in plain text]"
+    "titre_article": "[title of the article]",
+    "content_article": "[content of the article]"
+    "id_user": "[id of the current user]"
 }
 ```
 
 ## Success Response
 
-**Code** : `200 OK`
+**Code** : `201 CREATED`
 
 ## Error Response
 
-**Condition** : If 'username' and 'password' combination is wrong.
+**Condition** : If any field is missed
 
 **Code** : `400 BAD REQUEST`
