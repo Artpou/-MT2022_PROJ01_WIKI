@@ -20,10 +20,14 @@ Used to create an article.
 
 ## Success Response
 
+**Condition** : If user is logged in and no fields are missing.
+
 **Code** : `201 CREATED`
 
 ## Error Response
 
-**Condition** : If any field is missed
+**Condition** : If any field is missed.
 
 **Code** : `400 BAD REQUEST`
+
+### Or
