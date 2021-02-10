@@ -1,3 +1,7 @@
+package models
+
+import "time"
+
 type Article struct {
 	ID        uint `gorm:"primaryKey"`
 	CreatorID uint

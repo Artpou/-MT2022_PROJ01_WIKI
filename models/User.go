@@ -15,7 +15,10 @@ type User struct {
 
 func create(pseudo string, password string) User {
 	return User{
-		Pseudo:   pseudo,
-		Password: password,
+		Pseudo:    pseudo,
+		Email:     pseudo,
+		Password:  password,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	}
 }

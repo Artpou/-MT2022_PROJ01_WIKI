@@ -1,14 +1,11 @@
 package main
 
 import (
-	"gorm.io/driver/sqlite"
-	"gorm.io/gorm"
+	"github.com/Artpou/wiki_golang/views"
 )
 
 func main() {
-	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
-	if err != nil {
-		panic("failed to connect database")
-	}
-	v.test()
+	views.Test()
+	views.Main()
+	views.Main()
 }
