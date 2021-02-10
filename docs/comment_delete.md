@@ -1,4 +1,4 @@
-# Delete Article
+# Delete Comment
 
 Used to delete a comment.
 
@@ -18,25 +18,17 @@ User is in relation to the comment requested:
 
 ## Success Response
 
-**Condition** : If comment exists and current user is the author of the comment.
+**Condition** : If comment exists and current user is the owner of the article.
 
 **Code** : `200 OK`
 
 ## Error Response
 
-**Condition** : If 'id_user' field is missing.
+**Condition** : If comment does not exist.
 
-**Code** : `400 BAD REQUEST`
+**Code** : `404 NOT FOUND`
 
-**Content** :
-
-```json
-{
-    "id_user": [
-        "This field is required."
-    ]
-}
-```
+**Content** : {}
 
 ## Or
 
