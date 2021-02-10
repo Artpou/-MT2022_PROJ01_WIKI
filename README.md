@@ -3,8 +3,8 @@
 ## Open Endpoints
 
 * [Login](docs/login.md) : `POST /api/login/`
-* [Articles](docs/article_show.md) : `GET /api/articles/`
-* [Article](docs/article_show.md) : `GET /api/article/:id_article`
+* [Show Articles](docs/article_show.md) : `GET /api/articles/`
+* [Show Article](docs/article_show.md) : `GET /api/article/:id_article`
 
 ## Endpoints that require Authentication
 
