@@ -1,6 +1,6 @@
 # Create User
 
-Used to collect a Token for a registered User.
+Used to create/register a User.
 
 **URL** : `/api/users/`
 
