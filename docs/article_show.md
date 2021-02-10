@@ -1,10 +1,10 @@
-# Article
+# Show Article
 
-Used to show all articles.
+Used to show an article.
 
-**URL** : `/api/articles/`
+**URL** : `/api/articles/:id_article`
 
-**Method** : `POST`
+**Method** : `GET`
 
 **Auth required** : NO
 
@@ -12,14 +12,13 @@ Used to show all articles.
 
 ## Success Response
 
-**Condition** : None.
+**Condition** : If article exists.
 
 **Code** : `200 OK`
 
 **Content Example** :
 
 ```json
-[
     {
         "article": {
             "id": 123,
@@ -27,24 +26,13 @@ Used to show all articles.
             "content_article": "This is my content",
             "id_user": 11
         }
-    },
-    {
-        "article": {
-            "id": 124,
-            "title_article": "I am the second article",
-            "content_article": "This is my content",
-            "id_user": 18
-        }
-    },
-    {
-        "article": {
-            "id": 125,
-            "title_article": "I am the third article",
-            "content_article": "This is my content",
-            "id_user": 18
-        }
     }
-]
 ```
 
+## Error Response :
 
+**Condition** : If article does not exist.
+
+**Code** : `404 NOT FOUND`
+
+**Content** : `{}`
