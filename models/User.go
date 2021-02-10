@@ -1,3 +1,9 @@
+package models
+
+import (
+	"time"
+)
+
 type User struct {
 	ID        uint `gorm:"primaryKey"`
 	Email     string
@@ -8,8 +14,8 @@ type User struct {
 }
 
 func create(pseudo string, password string) {
-	return User{ 
-		Pseudo: pseudo,
-		password: password
-	}	
+	return &User{
+		Pseudo:   pseudo,
+		Password: password,
+	}
 }
