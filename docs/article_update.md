@@ -8,7 +8,14 @@ Used to update an article.
 
 **Auth required** : YES
 
-**Data constraints** : {}
+**Data constraints** : 
+
+```json
+{
+    "title_article": "[title of the article]",
+    "content_article": "[content of the article]"
+}
+```
 
 **Permissions required** :
 
@@ -38,4 +45,21 @@ User is in relation to the article requested:
 
 ```json
 {"detail": "You do not have permission to perform this action."}
+```
+
+## Or 
+
+**Condition** : If any field is missing.
+
+**Code** : `400 BAD REQUEST`
+
+**Content** :
+
+```json
+{
+    "content_article": [
+        "This field is required."
+    ]
+}
+
 ```

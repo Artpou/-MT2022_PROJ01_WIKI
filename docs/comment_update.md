@@ -12,7 +12,7 @@ Used to update a comment.
 
 ```json
 {
-    "content_comment": "This is the content of the comment"
+    "content_comment": "[content of the comment]"
 }
 ```
 
@@ -54,10 +54,8 @@ User is in relation to the comment requested:
 
 ```json
 {
-{
     "content_comment": [
         "This field is required."
     ]
-}
 }
 ```
