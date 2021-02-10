@@ -1,22 +1,14 @@
 # Article
 
-Used to create an article.
+Used to show all articles.
 
 **URL** : `/api/articles/`
 
 **Method** : `POST`
 
-**Auth required** : YES
+**Auth required** : NO
 
-**Data constraints**
-
-```json
-{
-    "titre_article": "[title of the article]",
-    "content_article": "[content of the article]",
-    "id_user": "[id of the current user]"
-}
-```
+**Data constraints** : {}
 
 ## Success Response
 
