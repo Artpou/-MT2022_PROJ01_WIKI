@@ -13,7 +13,7 @@ Used to create an article.
 ```json
 {
     "titre_article": "[title of the article]",
-    "content_article": "[content of the article]"
+    "content_article": "[content of the article]",
     "id_user": "[id of the current user]"
 }
 ```
