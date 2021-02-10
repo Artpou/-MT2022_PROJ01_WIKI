@@ -24,7 +24,7 @@ User is in relation to the article requested:
 
 ## Error Response
 
-**Condition** : If 'id_user' field is missing.
+**Condition** : If article does not exist.
 
 **Code** : `404 NOT FOUND`
 
