@@ -24,7 +24,7 @@ Used to show a comment.
             "id": 53,
             "content_comment": "This is the content of the comment",
             "date_comment": "2020-10-12 11:11:11",
-            "id_user": 15
+            "id_user": 15,
             "id_article" : 123
         }
     }
