@@ -1,4 +1,4 @@
-# Create Article
+# Create Comment
 
 Used to create a comment.
 
