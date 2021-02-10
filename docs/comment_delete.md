@@ -1,28 +1,49 @@
-# Login
+# Delete Article
 
-Used to collect a Token for a registered User.
+Used to delete a comment.
 
-**URL** : `/api/login/`
+**URL** : `/api/comments/:id_comment`
 
-**Method** : `POST`
+**Method** : `DELETE`
 
-**Auth required** : NO
+**Auth required** : YES
 
-**Data constraints**
+**Data constraints** :
 
 ```json
 {
-    "username": "[valid email address]",
-    "password": "[password in plain text]"
+    "id_user": "[current user id]"
 }
 ```
 
 ## Success Response
 
+**Condition** : If comment exists and current user is the author of the comment.
+
 **Code** : `200 OK`
 
 ## Error Response
 
-**Condition** : If 'username' and 'password' combination is wrong.
+**Condition** : If 'id_user' field is missing.
 
 **Code** : `400 BAD REQUEST`
+
+**Content** :
+
+```json
+{
+    "id_user": [
+        "This field is required."
+    ]
+}
+```
+
+## Or
+
+**Condition** : If user is not the author of the comment.
+
+**Code** : `403 FORBIDDEN`
+
+```json
+{"detail": "You do not have permission to perform this action."}
+```
