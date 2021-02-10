@@ -22,7 +22,7 @@ Used to show an article.
     {
         "article": {
             "id": 123,
-            "title_article": "I am the first article",
+            "title_article": "I am the article",
             "content_article": "This is my content",
             "id_user": 11
         }
