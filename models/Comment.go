@@ -1,7 +1,7 @@
-type Article struct {
+type Comment struct {
 	ID        uint `gorm:"primaryKey"`
 	CreatorID uint
-	Titre     string
+	ArticleID uint
 	Content   string
 	CreatedAt time.Time
 	UpdatedAt time.Time

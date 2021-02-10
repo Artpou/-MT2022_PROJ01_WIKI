@@ -1,8 +1,8 @@
-type Article struct {
+type User struct {
 	ID        uint `gorm:"primaryKey"`
-	CreatorID uint
-	Titre     string
-	Content   string
+	Password  string
+	Name      string
+	Email     string
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
