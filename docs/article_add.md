@@ -1,4 +1,4 @@
-# Article
+# Create Article
 
 Used to create an article.
 
