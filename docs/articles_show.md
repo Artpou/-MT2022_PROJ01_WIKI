@@ -1,28 +1,50 @@
-# Login
+# Show Articles
 
-Used to collect a Token for a registered User.
+Used to show all articles.
 
-**URL** : `/api/login/`
+**URL** : `/api/articles/`
 
-**Method** : `POST`
+**Method** : `GET`
 
 **Auth required** : NO
 
-**Data constraints**
-
-```json
-{
-    "username": "[valid email address]",
-    "password": "[password in plain text]"
-}
-```
+**Data constraints** : {}
 
 ## Success Response
 
+**Condition** : None.
+
 **Code** : `200 OK`
 
-## Error Response
+**Content Example** :
 
-**Condition** : If 'username' and 'password' combination is wrong.
+```json
+[
+    {
+        "article": {
+            "id": 123,
+            "title_article": "I am the first article",
+            "content_article": "This is my content",
+            "id_user": 11
+        }
+    },
+    {
+        "article": {
+            "id": 124,
+            "title_article": "I am the second article",
+            "content_article": "This is my content",
+            "id_user": 18
+        }
+    },
+    {
+        "article": {
+            "id": 125,
+            "title_article": "I am the third article",
+            "content_article": "This is my content",
+            "id_user": 18
+        }
+    }
+]
+```
 
-**Code** : `400 BAD REQUEST`
+
