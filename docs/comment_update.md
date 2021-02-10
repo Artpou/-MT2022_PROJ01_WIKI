@@ -54,10 +54,8 @@ User is in relation to the comment requested:
 
 ```json
 {
-{
     "content_comment": [
         "This field is required."
     ]
-}
 }
 ```
