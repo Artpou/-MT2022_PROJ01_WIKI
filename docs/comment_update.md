@@ -1,4 +1,4 @@
-# Delete Comment
+# Update Comment
 
 Used to update a comment.
 
@@ -8,7 +8,13 @@ Used to update a comment.
 
 **Auth required** : YES
 
-**Data constraints** : {}
+**Data constraints** : 
+
+```json
+{
+    "content_comment": "This is the content of the comment"
+}
+```
 
 **Permissions required** :
 
@@ -38,4 +44,20 @@ User is in relation to the comment requested:
 
 ```json
 {"detail": "You do not have permission to perform this action."}
+```
+
+## Or
+
+**Condition** : If 'content_comment' field is missing.
+
+**Code** : `400 BAD REQUEST`
+
+```json
+{
+{
+    "content_comment": [
+        "This field is required."
+    ]
+}
+}
 ```
