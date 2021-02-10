@@ -12,10 +12,39 @@ Used to show all articles.
 
 ## Success Response
 
-**Code** : `201 CREATED`
+**Condition** : None.
 
-## Error Response
+**Code** : `200 OK`
 
-**Condition** : If any field is missed
+**Content Example** :
 
-**Code** : `400 BAD REQUEST`
+```json
+[
+    {
+        "article": {
+            "id": 123,
+            "title_article": "I am the first article",
+            "content_article": "This is my content",
+            "id_user": 11
+        }
+    },
+    {
+        "article": {
+            "id": 124,
+            "title_article": "I am the second article",
+            "content_article": "This is my content",
+            "id_user": 18
+        }
+    },
+    {
+        "article": {
+            "id": 125,
+            "title_article": "I am the third article",
+            "content_article": "This is my content",
+            "id_user": 18
+        }
+    }
+]
+```
+
+
