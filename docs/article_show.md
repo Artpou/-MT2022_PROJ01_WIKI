@@ -24,6 +24,7 @@ Used to show an article.
             "id": 123,
             "title_article": "I am the article",
             "content_article": "This is my content",
+            "date_article": "2020-10-12 11:11:11"
             "id_user": 11
         }
     }
