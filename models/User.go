@@ -13,12 +13,9 @@ type User struct {
 	UpdatedAt time.Time
 }
 
-func create(pseudo string, password string) User {
-	return User{
-		Pseudo:    pseudo,
-		Email:     pseudo,
-		Password:  password,
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
-	}
+func NewUser(pseudo string, password string) *User {
+	user := User{Pseudo: pseudo, Email: pseudo, Password: password}
+	user.CreatedAt = time.Now()
+	user.UpdatedAt = time.Now()
+	return &user
 }
