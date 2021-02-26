@@ -1,22 +1,31 @@
 package main
 
 import (
-	//"fmt"
+	"fmt"
 	"net/http"
-	//"log"
+	"log"
+
+	"github.com/gorilla/mux"
 )
 
-func test() {
+func main() {
 
-	http.HandleFunc("/api/login/", login)
-	http.HandleFunc("/api/users/", users)
-	http.HandleFunc("/api/comments/", comments)
-	http.HandleFunc("/api/articles/", articles)
+	router := mux.NewRouter().StrictSlash(true)
+	router.HandleFunc("/", homeLink)
+	router.HandleFunc("/api/login/", login)
+	router.HandleFunc("/api/users/", users)
+	router.HandleFunc("/api/comments/", comments)
+	router.HandleFunc("/api/articles/", articles)
 
 	fs := http.FileServer(http.Dir("static/"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
-	http.ListenAndServe(":80", nil)
+	log.Fatal(http.ListenAndServe(":8080", router))
+
+}
+
+func homeLink(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Welcome")
 }
 
 func login(w http.ResponseWriter, r *http.Request) {
