@@ -7,7 +7,7 @@ import (
 type User struct {
 	ID        uint `gorm:"primaryKey"`
 	Email     string
-	Pseudo    string
+	Username  string
 	Password  string
 	CreatedAt time.Time
 	UpdatedAt time.Time

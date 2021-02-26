@@ -1,11 +1,13 @@
 package models
 
-import "time"
+import (
+	"time"
+)
 
 type Article struct {
 	ID        uint `gorm:"primaryKey"`
 	CreatorID uint
-	Titre     string
+	Title     string
 	Content   string
 	CreatedAt time.Time
 	UpdatedAt time.Time
