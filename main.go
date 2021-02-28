@@ -5,11 +5,28 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/Artpou/wiki_golang/controllers"
+	"github.com/Artpou/wiki_golang/models"
 	"github.com/gorilla/mux"
 )
 
+var db *gorm.DB
+var err error
+
 func main() {
+	//init bdd
+	//pas ":=" car var globale
+	db, err = gorm.Open("mysql", "sql11395463:5mRSPiqM9M@tcp(sql11.freemysqlhosting.net:3306)/sql11395463?charset=utf8&parseTime=True")
+
+	if err != nil {
+  	log.Println("DB connection Failed to Open")
+  } else {
+  	log.Println("DB connection Established")
+  }
+
+	db.AutoMigrate(&models.Comment{}, &models.Article{}, &models.User{} )
 
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/", homeLink)
