@@ -4,6 +4,7 @@ go 1.15
 
 require (
 	github.com/alecthomas/gocyclo v0.0.0-20150208221726-aa8f8b160214 // indirect
+	github.com/go-sql-driver/mysql v1.5.0
 	github.com/gorilla/mux v1.8.0
 	github.com/jinzhu/gorm v1.9.16
 	github.com/mdempsky/maligned v0.0.0-20210215075342-f0178ee82032 // indirect
