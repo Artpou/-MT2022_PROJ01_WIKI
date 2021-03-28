@@ -1,35 +1,37 @@
 package controllers
+
 import (
 	"net/http"
-  _"github.com/gorilla/mux"
-	_"github.com/jinzhu/gorm"
+
+	"github.com/Artpou/wiki_golang/models"
+	"github.com/Artpou/wiki_golang/views"
 )
-func getComments(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
+
+func AddComment(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte(`{"message": "List of articles", id_user : "123"}`))
+	comment := models.NewComment("test")
+	w.Write([]byte(views.AddComment(*comment)))
 }
 
-func getComment(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
+func GetComment(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte(`{"message": "Comment", id_user : "123"}`))
+	comment := models.NewComment("test")
+	w.Write([]byte(views.GetComment(*comment)))
 }
 
-func createComment(w http.ResponseWriter, r *http.Request){
-	w.Header().Set("Content-Type", "application/json")
+func GetComments(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte(`{"message": "Comment added", id_user : "123"}`))
+	w.Write([]byte(views.GetComments()))
 }
 
-func updateComment(w http.ResponseWriter, r *http.Request){
-	w.Header().Set("Content-Type", "application/json")
+func DeleteComment(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte(`{"message": "Sucess: comment updated", id_user : "123"}`))
+	user := models.NewComment("test")
+	w.Write([]byte(views.DeleteComment(*user)))
 }
 
-func deleteComment(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
+func UpdateComment(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte(`{"message": "Sucess: comment deleted", id_user : "123"}`))
+	user := models.NewComment("test")
+	w.Write([]byte(views.UpdateComment(*user)))
 }
