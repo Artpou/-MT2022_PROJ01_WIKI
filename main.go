@@ -1,48 +1,48 @@
 package main
 
 import (
-	"fmt"
-	"log"
-	"strconv"
-	"net/http"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
-	"github.com/gorilla/mux"
-	"github.com/jinzhu/gorm"
-	_"github.com/go-sql-driver/mysql"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"log"
+	"net/http"
+	"strconv"
+
 	"github.com/Artpou/wiki_golang/controllers"
 	"github.com/Artpou/wiki_golang/models"
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/gorilla/mux"
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
 var db *gorm.DB
 var err error
 var dbServer, dbName, dbUsername, dbPassword, dbPort, dbConn string
 
-
 func main() {
 	//init bdd
-	dbServer   = "sql11.freemysqlhosting.net"
-  dbName     = "sql11395463"
+	dbServer = "sql11.freemysqlhosting.net"
+	dbName = "sql11395463"
 	dbUsername = "sql11395463"
 	dbPassword = "5mRSPiqM9M"
-	dbPort     = "3306"
-	dbConn		 = dbUsername+":"+dbPassword+"@tcp("+dbServer+":"+dbPort+")/"+dbName+"?charset=utf8&parseTime=True"
+	dbPort = "3306"
+	dbConn = dbUsername + ":" + dbPassword + "@tcp(" + dbServer + ":" + dbPort + ")/" + dbName + "?charset=utf8&parseTime=True"
 
-	db, err		 = gorm.Open("mysql", dbConn)
+	db, err = gorm.Open("mysql", dbConn)
 
 	if err != nil {
-  	log.Println("DB connection Failed to Open")
-  } else {
-  	log.Println("DB connection Established")
-  }
+		log.Println("DB connection Failed to Open")
+	} else {
+		log.Println("DB connection Established")
+	}
 
-	db.AutoMigrate(&models.Comment{}, &models.Article{}, &models.User{} )
-	handleRequests();
+	db.AutoMigrate(&models.Comment{}, &models.Article{}, &models.User{})
+	handleRequests()
 	defer db.Close()
 }
 
-func handleRequests(){
+func handleRequests() {
 	log.Println("Starting development server at http://127.0.0.1:10000/")
 	router := mux.NewRouter().StrictSlash(true)
 
@@ -113,7 +113,7 @@ func getArticle(w http.ResponseWriter, r *http.Request) {
 	for _, article := range articles {
 		//Convert string to uint64
 		u, err := strconv.ParseUint(key, 10, 64)
-		if err == nil{
+		if err == nil {
 			//Convert uint64 to uint
 			u := uint(u)
 			if article.ID == u {
@@ -125,7 +125,7 @@ func getArticle(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func createArticle(w http.ResponseWriter, r *http.Request){
+func createArticle(w http.ResponseWriter, r *http.Request) {
 	// return the string response containing the request body
 	reqBody, _ := ioutil.ReadAll(r.Body)
 	var article models.Article
@@ -135,46 +135,39 @@ func createArticle(w http.ResponseWriter, r *http.Request){
 	json.NewEncoder(w).Encode(article)
 }
 
-func updateArticle(w http.ResponseWriter, r *http.Request){
+func updateArticle(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 	w.Write([]byte(`{"message": "Sucess: article updated", id_user : "123"}`))
+	controllers.DeleteSelf(w, r)
 }
 
 func deleteArticle(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 	w.Write([]byte(`{"message": "Sucess: article deleted", id_user : "123"}`))
+	controllers.DeleteSelf(w, r)
+
 }
 
 // COMMENTS
 
 func getComments(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte(`{"message": "List of articles", id_user : "123"}`))
+	controllers.GetComments(w, r)
 }
 
 func getComment(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte(`{"message": "Comment", id_user : "123"}`))
+	controllers.GetComment(w, r)
 }
 
-func createComment(w http.ResponseWriter, r *http.Request){
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte(`{"message": "Comment added", id_user : "123"}`))
+func createComment(w http.ResponseWriter, r *http.Request) {
+	controllers.AddComment(w, r)
 }
 
-func updateComment(w http.ResponseWriter, r *http.Request){
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte(`{"message": "Sucess: comment updated", id_user : "123"}`))
+func updateComment(w http.ResponseWriter, r *http.Request) {
+	controllers.UpdateComment(w, r)
 }
 
 func deleteComment(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte(`{"message": "Sucess: comment deleted", id_user : "123"}`))
+	controllers.DeleteComment(w, r)
 }
