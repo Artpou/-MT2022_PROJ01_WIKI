@@ -14,7 +14,7 @@ type User struct {
 }
 
 func NewUser(pseudo string, password string) *User {
-	user := User{Pseudo: pseudo, Email: pseudo, Password: password}
+	user := User{Username: pseudo, Email: pseudo, Password: password}
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = time.Now()
 	return &user
