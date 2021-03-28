@@ -2,20 +2,22 @@ package models
 
 import (
 	"time"
+
+	_ "github.com/jinzhu/gorm"
 )
 
 type User struct {
-	ID        uint `gorm:"primaryKey"`
-	Email     string
-	Username  string
-	Password  string
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	ID           uint `gorm:"primaryKey"`
+	Email        string
+	Username     string
+	Password     string
+	CreationDate time.Time
+	LatestUpdate time.Time
 }
 
-func NewUser(pseudo string, password string) *User {
-	user := User{Username: pseudo, Email: pseudo, Password: password}
-	user.CreatedAt = time.Now()
-	user.UpdatedAt = time.Now()
+func NewUser(username string, password string) *User {
+	user := User{Username: username, Email: username, Password: password}
+	user.CreationDate = time.Now()
+	user.LatestUpdate = time.Now()
 	return &user
 }

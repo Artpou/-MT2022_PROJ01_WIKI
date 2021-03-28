@@ -2,13 +2,20 @@ package models
 
 import (
 	"time"
+
+	_ "github.com/jinzhu/gorm"
 )
 
 type Article struct {
-	ID        uint `gorm:"primaryKey"`
-	CreatorID uint
-	Title     string
-	Content   string
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	ID           uint `gorm:"primaryKey"`
+	User         User
+	AuthorID     uint
+	Title        string
+	Content      string `gorm:"size:10000"`
+	CreationDate time.Time
+	LatestUpdate time.Time
+}
+
+func NewArticle(title string, content string) *Comment {
+
 }
