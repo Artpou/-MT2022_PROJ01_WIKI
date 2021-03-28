@@ -50,11 +50,11 @@ func handleRequests(){
 	router.HandleFunc("/api/login/", login).Methods("POST")
 
 	//Comments
-	router.HandleFunc("/api/comments/", getComments).Methods("GET")
-	router.HandleFunc("/api/comments/", createComment).Methods("POST")
-	router.HandleFunc("/api/comments/{id}", getComment).Methods("GET")
-	router.HandleFunc("/api/comments/{id}", updateComment).Methods("PUT")
-	router.HandleFunc("/api/comments/{id}", deleteComment).Methods("DELETE")
+	router.HandleFunc("/api/comments/", controllers.getComments()).Methods("GET")
+	router.HandleFunc("/api/comments/", controllers.createComment()).Methods("POST")
+	router.HandleFunc("/api/comments/{id}", controllers.getComment()).Methods("GET")
+	router.HandleFunc("/api/comments/{id}", controllers.updateComment()).Methods("PUT")
+	router.HandleFunc("/api/comments/{id}", controllers.deleteComment()).Methods("DELETE")
 
 	//Articles
 	router.HandleFunc("/api/articles/", getArticles).Methods("GET")
@@ -94,87 +94,4 @@ func login(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 	w.Write([]byte(`{"message": "Success: User logged", id_user : "123"}`))
-}
-
-// ARTICLES
-
-func getArticles(w http.ResponseWriter, r *http.Request) {
-	articles := []models.Article{}
-	db.Find(&articles)
-	fmt.Println("Success : getting all articles")
-	json.NewEncoder(w).Encode(articles)
-}
-
-func getArticle(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	key := vars["id"]
-	articles := []models.Article{}
-	db.Find(&articles)
-	for _, article := range articles {
-		//Convert string to uint64
-		u, err := strconv.ParseUint(key, 10, 64)
-		if err == nil{
-			//Convert uint64 to uint
-			u := uint(u)
-			if article.ID == u {
-				fmt.Println(article)
-				fmt.Println("Success : getting Article N.", key)
-				json.NewEncoder(w).Encode(article)
-			}
-		}
-	}
-}
-
-func createArticle(w http.ResponseWriter, r *http.Request){
-	// return the string response containing the request body
-	reqBody, _ := ioutil.ReadAll(r.Body)
-	var article models.Article
-	json.Unmarshal(reqBody, &article)
-	db.Create(&article)
-	fmt.Println("Success : Creating Article")
-	json.NewEncoder(w).Encode(article)
-}
-
-func updateArticle(w http.ResponseWriter, r *http.Request){
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte(`{"message": "Sucess: article updated", id_user : "123"}`))
-}
-
-func deleteArticle(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte(`{"message": "Sucess: article deleted", id_user : "123"}`))
-}
-
-// COMMENTS
-
-func getComments(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte(`{"message": "List of articles", id_user : "123"}`))
-}
-
-func getComment(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte(`{"message": "Comment", id_user : "123"}`))
-}
-
-func createComment(w http.ResponseWriter, r *http.Request){
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte(`{"message": "Comment added", id_user : "123"}`))
-}
-
-func updateComment(w http.ResponseWriter, r *http.Request){
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte(`{"message": "Sucess: comment updated", id_user : "123"}`))
-}
-
-func deleteComment(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte(`{"message": "Sucess: comment deleted", id_user : "123"}`))
 }
