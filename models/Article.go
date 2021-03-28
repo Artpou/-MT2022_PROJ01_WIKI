@@ -8,10 +8,18 @@ import (
 
 type Article struct {
 	ID           uint `gorm:"primaryKey"`
-	User         User
+	//User         User
 	AuthorID     uint
 	Title        string
 	Content      string `gorm:"size:10000"`
 	CreationDate time.Time
 	LatestUpdate time.Time
+}
+
+func NewArticle(title string, content string) *Article {
+	article := Article{Title: title, Content: content}
+	article.AuthorID = 1
+	article.CreationDate = time.Now()
+	article.LatestUpdate = time.Now()
+	return &article
 }

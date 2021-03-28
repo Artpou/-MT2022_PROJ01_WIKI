@@ -8,7 +8,7 @@ import (
 
 type Comment struct {
 	ID           uint `gorm:"primaryKey"`
-	User         User
+	//User         User
 	AuthorID     uint
 	Article      Article
 	ArticleID    uint
@@ -19,6 +19,7 @@ type Comment struct {
 
 func NewComment(content string) *Comment {
 	comment := Comment{Content: content}
+	comment.AuthorID = 1
 	comment.CreationDate = time.Now()
 	comment.LatestUpdate = time.Now()
 	return &comment

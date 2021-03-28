@@ -42,9 +42,10 @@ func handleRequests() {
 	router.HandleFunc("/api/articles/{id}", deleteArticle).Methods("DELETE")
 
 	// User methods
-	router.HandleFunc("/api/users", showInfo).Methods("GET")
+	router.HandleFunc("/api/users", getUsers).Methods("GET")
 	router.HandleFunc("/api/users", updateInfo).Methods("POST")
 	router.HandleFunc("/api/users", deleteSelf).Methods("DELETE")
+	router.HandleFunc("/api/users/{id}", showInfo).Methods("GET")
 
 	fs := http.FileServer(http.Dir("static/"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
@@ -54,6 +55,10 @@ func handleRequests() {
 
 func homeLink(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Welcome")
+}
+
+func getUsers(w http.ResponseWriter, r *http.Request){
+	controllers.GetUsers(db, w ,r)
 }
 
 func showInfo(w http.ResponseWriter, r *http.Request) {
@@ -74,61 +79,25 @@ func login(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(`{"message": "Success: User logged", id_user : "123"}`))
 }
 
-// ARTICLES
+//ARTICLES
 
 func getArticles(w http.ResponseWriter, r *http.Request) {
-	// articles := []models.Article{}
-	// db.Find(&articles)
-	// fmt.Println("Success : getting all articles")
-	// json.NewEncoder(w).Encode(articles)
 	controllers.GetArticles(db, w, r)
 }
 
 func getArticle(w http.ResponseWriter, r *http.Request) {
-	// vars := mux.Vars(r)
-	// key := vars["id"]
-	// articles := []models.Article{}
-	// db.Find(&articles)
-	// for _, article := range articles {
-	// 	//Convert string to uint64
-	// 	u, err := strconv.ParseUint(key, 10, 64)
-	// 	if err == nil {
-	// 		//Convert uint64 to uint
-	// 		u := uint(u)
-	// 		if article.ID == u {
-	// 			fmt.Println(article)
-	// 			fmt.Println("Success : getting Article N.", key)
-	// 			json.NewEncoder(w).Encode(article)
-	// 		}
-	// 	}
-	// }
 	controllers.GetArticle(db, w, r)
 }
 
 func createArticle(w http.ResponseWriter, r *http.Request) {
-	// return the string response containing the request body
-	// reqBody, _ := ioutil.ReadAll(r.Body)
-	// var article models.Article
-	// json.Unmarshal(reqBody, &article)
-	// db.Create(&article)
-	// fmt.Println("Success : Creating Article")
-	// json.NewEncoder(w).Encode(article)
 	controllers.CreateArticle(db, w, r)
 }
 
 func updateArticle(w http.ResponseWriter, r *http.Request) {
-	// w.Header().Set("Content-Type", "application/json")
-	// w.WriteHeader(http.StatusCreated)
-	// w.Write([]byte(`{"message": "Sucess: article updated", id_user : "123"}`))
-	// controllers.DeleteSelf(w, r)
-	controllers.UpdateArticle(w, r)
+	controllers.UpdateArticle(db, w, r)
 }
 
 func deleteArticle(w http.ResponseWriter, r *http.Request) {
-	// w.Header().Set("Content-Type", "application/json")
-	// w.WriteHeader(http.StatusCreated)
-	// w.Write([]byte(`{"message": "Sucess: article deleted", id_user : "123"}`))
-	// controllers.DeleteSelf(w, r)
 	controllers.DeleteArticle(w, r)
 }
 
@@ -143,7 +112,7 @@ func getComment(w http.ResponseWriter, r *http.Request) {
 }
 
 func createComment(w http.ResponseWriter, r *http.Request) {
-	controllers.AddComment(w, r)
+	controllers.CreateComment(w, r)
 }
 
 func updateComment(w http.ResponseWriter, r *http.Request) {

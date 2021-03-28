@@ -7,7 +7,7 @@ import (
 	"github.com/Artpou/wiki_golang/views"
 )
 
-func AddComment(w http.ResponseWriter, r *http.Request) {
+func CreateComment(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 	comment := models.NewComment("test")
 	w.Write([]byte(views.AddComment(*comment)))

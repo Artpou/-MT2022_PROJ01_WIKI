@@ -14,7 +14,6 @@ var err error
 var dbServer, dbName, dbUsername, dbPassword, dbPort, dbConn string
 
 func InitDb() *gorm.DB {
-	//init bdd
 	dbServer = "sql11.freemysqlhosting.net"
 	dbName = "sql11395463"
 	dbUsername = "sql11395463"
@@ -28,10 +27,8 @@ func InitDb() *gorm.DB {
 		log.Println("DB connection Failed to Open")
 	} else {
 		log.Println("DB connection Established")
+		db.AutoMigrate(&models.Comment{}, &models.Article{}, &models.User{})
 	}
-
-	db.AutoMigrate(&models.Comment{}, &models.Article{}, &models.User{})
-
 	return db
 }
 
