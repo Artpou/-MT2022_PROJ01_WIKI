@@ -1,15 +1,12 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
-	"strconv"
 
 	"github.com/Artpou/wiki_golang/controllers"
-	"github.com/Artpou/wiki_golang/models"
+	"github.com/Artpou/wiki_golang/database"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
@@ -17,29 +14,10 @@ import (
 )
 
 var db *gorm.DB
-var err error
-var dbServer, dbName, dbUsername, dbPassword, dbPort, dbConn string
 
 func main() {
-	//init bdd
-	dbServer = "sql11.freemysqlhosting.net"
-	dbName = "sql11395463"
-	dbUsername = "sql11395463"
-	dbPassword = "5mRSPiqM9M"
-	dbPort = "3306"
-	dbConn = dbUsername + ":" + dbPassword + "@tcp(" + dbServer + ":" + dbPort + ")/" + dbName + "?charset=utf8&parseTime=True"
-
-	db, err = gorm.Open("mysql", dbConn)
-
-	if err != nil {
-		log.Println("DB connection Failed to Open")
-	} else {
-		log.Println("DB connection Established")
-	}
-
-	db.AutoMigrate(&models.Comment{}, &models.Article{}, &models.User{})
+	db = database.InitDb()
 	handleRequests()
-	defer db.Close()
 }
 
 func handleRequests() {
@@ -99,55 +77,59 @@ func login(w http.ResponseWriter, r *http.Request) {
 // ARTICLES
 
 func getArticles(w http.ResponseWriter, r *http.Request) {
-	articles := []models.Article{}
-	db.Find(&articles)
-	fmt.Println("Success : getting all articles")
-	json.NewEncoder(w).Encode(articles)
+	// articles := []models.Article{}
+	// db.Find(&articles)
+	// fmt.Println("Success : getting all articles")
+	// json.NewEncoder(w).Encode(articles)
+	controllers.GetArticles(db, w, r)
 }
 
 func getArticle(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	key := vars["id"]
-	articles := []models.Article{}
-	db.Find(&articles)
-	for _, article := range articles {
-		//Convert string to uint64
-		u, err := strconv.ParseUint(key, 10, 64)
-		if err == nil {
-			//Convert uint64 to uint
-			u := uint(u)
-			if article.ID == u {
-				fmt.Println(article)
-				fmt.Println("Success : getting Article N.", key)
-				json.NewEncoder(w).Encode(article)
-			}
-		}
-	}
+	// vars := mux.Vars(r)
+	// key := vars["id"]
+	// articles := []models.Article{}
+	// db.Find(&articles)
+	// for _, article := range articles {
+	// 	//Convert string to uint64
+	// 	u, err := strconv.ParseUint(key, 10, 64)
+	// 	if err == nil {
+	// 		//Convert uint64 to uint
+	// 		u := uint(u)
+	// 		if article.ID == u {
+	// 			fmt.Println(article)
+	// 			fmt.Println("Success : getting Article N.", key)
+	// 			json.NewEncoder(w).Encode(article)
+	// 		}
+	// 	}
+	// }
+	controllers.GetArticle(db, w, r)
 }
 
 func createArticle(w http.ResponseWriter, r *http.Request) {
 	// return the string response containing the request body
-	reqBody, _ := ioutil.ReadAll(r.Body)
-	var article models.Article
-	json.Unmarshal(reqBody, &article)
-	db.Create(&article)
-	fmt.Println("Success : Creating Article")
-	json.NewEncoder(w).Encode(article)
+	// reqBody, _ := ioutil.ReadAll(r.Body)
+	// var article models.Article
+	// json.Unmarshal(reqBody, &article)
+	// db.Create(&article)
+	// fmt.Println("Success : Creating Article")
+	// json.NewEncoder(w).Encode(article)
+	controllers.CreateArticle(db, w, r)
 }
 
 func updateArticle(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte(`{"message": "Sucess: article updated", id_user : "123"}`))
-	controllers.DeleteSelf(w, r)
+	// w.Header().Set("Content-Type", "application/json")
+	// w.WriteHeader(http.StatusCreated)
+	// w.Write([]byte(`{"message": "Sucess: article updated", id_user : "123"}`))
+	// controllers.DeleteSelf(w, r)
+	controllers.UpdateArticle(w, r)
 }
 
 func deleteArticle(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte(`{"message": "Sucess: article deleted", id_user : "123"}`))
-	controllers.DeleteSelf(w, r)
-
+	// w.Header().Set("Content-Type", "application/json")
+	// w.WriteHeader(http.StatusCreated)
+	// w.Write([]byte(`{"message": "Sucess: article deleted", id_user : "123"}`))
+	// controllers.DeleteSelf(w, r)
+	controllers.DeleteArticle(w, r)
 }
 
 // COMMENTS

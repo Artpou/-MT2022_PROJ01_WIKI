@@ -15,7 +15,3 @@ type Article struct {
 	CreationDate time.Time
 	LatestUpdate time.Time
 }
-
-func NewArticle(title string, content string) *Comment {
-
-}
