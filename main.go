@@ -66,15 +66,15 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 	controllers.GetUser(db, w, r)
 }
 
-func updateUser(w http.ResponseWriter, r *http.Request){
+func updateUser(w http.ResponseWriter, r *http.Request) {
 	controllers.UpdateUser(db, w, r)
 }
 
-func createUser(w http.ResponseWriter, r *http.Request){
+func createUser(w http.ResponseWriter, r *http.Request) {
 	controllers.CreateUser(db, w, r)
 }
 
-func deleteUser(w http.ResponseWriter, r *http.Request){
+func deleteUser(w http.ResponseWriter, r *http.Request) {
 	controllers.DeleteUser(db, w, r)
 }
 
@@ -91,9 +91,7 @@ func deleteSelf(w http.ResponseWriter, r *http.Request) {
 }
 
 func login(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte(`{"message": "Success: User logged", id_user : "123"}`))
+	controllers.Signin(db, w, r)
 }
 
 //ARTICLES

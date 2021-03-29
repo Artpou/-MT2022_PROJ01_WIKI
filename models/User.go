@@ -16,8 +16,8 @@ const (
 
 type User struct {
 	ID           uint   `gorm:"primaryKey"`
-	Username     string `gorm:"unique;not null;size:255"`
-	Password     string `gorm:"not null;size:255"`
+	Username     string `gorm:"unique;not null;size:255" json:"username"`
+	Password     string `gorm:"not null;size:255" json:"password"`
 	Role         Role
 	CreationDate time.Time
 	LatestUpdate time.Time
