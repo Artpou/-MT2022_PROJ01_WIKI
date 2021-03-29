@@ -7,7 +7,7 @@ import (
 )
 
 func ShowUser(user models.User) string {
-	return fmt.Sprintf(`{ID: %d,"Username": %s, "Email": %s}`, user.ID, user.Username, user.Email)
+	return fmt.Sprintf(`{ID: %d,"Username": %s, "Email": %s}`, user.ID, user.Username)
 }
 
 func AddUser(user models.User) string {

@@ -46,6 +46,7 @@ func handleRequests() {
 	router.HandleFunc("/api/users", createUser).Methods("POST")
 	router.HandleFunc("/api/users", deleteSelf).Methods("DELETE")
 	router.HandleFunc("/api/users/{id}", getUser).Methods("GET")
+	router.HandleFunc("/api/users/{id}", updateUser).Methods("PUT")
 
 	fs := http.FileServer(http.Dir("static/"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
@@ -63,6 +64,10 @@ func getUsers(w http.ResponseWriter, r *http.Request){
 
 func getUser(w http.ResponseWriter, r *http.Request){
 	controllers.GetUser(db, w, r)
+}
+
+func updateUser(w http.ResponseWriter, r *http.Request){
+	controllers.UpdateUser(db, w, r)
 }
 
 func createUser(w http.ResponseWriter, r *http.Request){

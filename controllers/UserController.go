@@ -58,10 +58,40 @@ func GetUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	handler.RespondJSON(w, http.StatusOK, user)
 }
 
-func UpdateUser(w http.ResponseWriter, r *http.Request) {
-	/*w.WriteHeader(http.StatusCreated)
-	user := models.NewUser("test", "1234")
-	w.Write([]byte(views.DeleteUser(*user)))*/
+func UpdateUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	uid64, err  := strconv.ParseUint(id, 10, 64)
+	if err != nil {
+		handler.RespondError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+	uid := uint(uid64)
+	oldUser 	:= models.User{}
+	newUser 	:= models.User{}
+	if err := db.First(&oldUser, models.User{ID: uid}).Error; err != nil {
+		handler.RespondError(w, http.StatusNotFound, err.Error())
+		return
+	}
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&newUser); err != nil {
+		handler.RespondError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+	defer r.Body.Close()
+
+	if newUser.Password == ""{
+		handler.RespondError(w, http.StatusBadRequest, "Password is missing")
+		return
+	}
+
+	savedUser := models.UpdateUser(oldUser, newUser.Password)
+
+	if err := db.Save(&savedUser).Error; err != nil {
+		handler.RespondError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+	handler.RespondJSON(w, http.StatusOK, savedUser)
 }
 
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
