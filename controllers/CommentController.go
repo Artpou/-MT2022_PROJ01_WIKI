@@ -58,10 +58,54 @@ func CreateComment(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	handler.RespondJSON(w, http.StatusCreated, comment)
 }
 
-func DeleteComment(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+func UpdateComment(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	uid64, err := strconv.ParseUint(id, 10, 64)
+	if err != nil {
+		handler.RespondError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+	uid := uint(uid64)
+	oldComment := models.Comment{}
+	newComment := models.Comment{}
+	if err := db.First(&oldComment, models.Comment{ID: uid}).Error; err != nil {
+		handler.RespondError(w, http.StatusNotFound, err.Error())
+		return
+	}
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&newComment); err != nil {
+		handler.RespondError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+	defer r.Body.Close()
 
+	updatedComment := models.UpdateComment(oldComment, newComment.Content)
+
+	if err := db.Save(&updatedComment).Error; err != nil {
+		handler.RespondError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+	handler.RespondJSON(w, http.StatusOK, updatedComment)
 }
 
-func UpdateComment(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-
+func DeleteComment(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	uid64, err  := strconv.ParseUint(id, 10, 64)
+	if err != nil {
+		handler.RespondError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+	uid := uint(uid64)
+	comment := models.Comment{}
+	if err := db.First(&comment, models.Comment{ID: uid}).Error; err != nil {
+		handler.RespondError(w, http.StatusNotFound, err.Error())
+		return
+	}
+	if err := db.Delete(&comment).Error; err != nil {
+		handler.RespondError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+	handler.RespondJSON(w, http.StatusNoContent, nil)
 }

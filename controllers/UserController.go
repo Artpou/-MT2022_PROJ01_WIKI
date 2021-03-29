@@ -85,13 +85,13 @@ func UpdateUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	savedUser := models.UpdateUser(oldUser, newUser.Password)
+	updatedUser := models.UpdateUser(oldUser, newUser.Password)
 
-	if err := db.Save(&savedUser).Error; err != nil {
+	if err := db.Save(&updatedUser).Error; err != nil {
 		handler.RespondError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
-	handler.RespondJSON(w, http.StatusOK, savedUser)
+	handler.RespondJSON(w, http.StatusOK, updatedUser)
 }
 
 func DeleteUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {

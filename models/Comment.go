@@ -24,3 +24,11 @@ func NewComment(articleID uint, content string) *Comment {
 	comment.LatestUpdate = time.Now()
 	return &comment
 }
+
+func UpdateComment(article Comment, content string) *Comment {
+	if content != "" {
+		article.Content = content
+	}
+	article.LatestUpdate = time.Now()
+	return &article
+}

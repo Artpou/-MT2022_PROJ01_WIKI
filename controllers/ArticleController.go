@@ -91,13 +91,13 @@ func UpdateArticle(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
-	savedUser := models.UpdateArticle(oldArticle, newArticle.Title, newArticle.Content)
+	updatedArticle := models.UpdateArticle(oldArticle, newArticle.Title, newArticle.Content)
 
-	if err := db.Save(&savedUser).Error; err != nil {
+	if err := db.Save(&updatedArticle).Error; err != nil {
 		handler.RespondError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
-	handler.RespondJSON(w, http.StatusOK, savedUser)
+	handler.RespondJSON(w, http.StatusOK, updatedArticle)
 }
 
 func DeleteArticle(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
