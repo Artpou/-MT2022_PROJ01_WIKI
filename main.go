@@ -115,7 +115,7 @@ func updateArticle(w http.ResponseWriter, r *http.Request) {
 }
 
 func deleteArticle(w http.ResponseWriter, r *http.Request) {
-	controllers.DeleteArticle(w, r)
+	controllers.DeleteArticle(db, w, r)
 }
 
 // COMMENTS
