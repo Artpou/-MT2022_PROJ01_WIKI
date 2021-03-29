@@ -38,10 +38,12 @@ func GetArticle(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 
 func CreateArticle(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	reqBody, _ := ioutil.ReadAll(r.Body)
-	var article models.Article
+	res, _ := json.Marshal(reqBody)
+	w.Header().Set("Content-Type", "application/json")
+	w.Write([]byte(res))
+	/*var article models.Article
 	json.Unmarshal(reqBody, &article)
-	db.Create(&article)
-	w.Write([]byte("Success : Creating Article"))
+	db.Create(&article)*/
 }
 
 func UpdateArticle(db *gorm.DB, w http.ResponseWriter, r *http.Request) {

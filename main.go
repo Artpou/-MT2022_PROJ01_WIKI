@@ -43,9 +43,9 @@ func handleRequests() {
 
 	// User methods
 	router.HandleFunc("/api/users", getUsers).Methods("GET")
-	router.HandleFunc("/api/users", updateInfo).Methods("POST")
+	router.HandleFunc("/api/users", createUser).Methods("POST")
 	router.HandleFunc("/api/users", deleteSelf).Methods("DELETE")
-	router.HandleFunc("/api/users/{id}", showInfo).Methods("GET")
+	router.HandleFunc("/api/users/{id}", getUser).Methods("GET")
 
 	fs := http.FileServer(http.Dir("static/"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
@@ -59,6 +59,14 @@ func homeLink(w http.ResponseWriter, r *http.Request) {
 
 func getUsers(w http.ResponseWriter, r *http.Request){
 	controllers.GetUsers(db, w ,r)
+}
+
+func getUser(w http.ResponseWriter, r *http.Request){
+	controllers.GetUser(db, w, r)
+}
+
+func createUser(w http.ResponseWriter, r *http.Request){
+	controllers.CreateUser(db, w, r)
 }
 
 func showInfo(w http.ResponseWriter, r *http.Request) {
