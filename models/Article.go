@@ -28,3 +28,14 @@ func NewArticle(title string, content string) *Article {
 	article.LatestUpdate = time.Now()
 	return &article
 }
+
+func UpdateArticle(article Article, title string, content string) *Article {
+	if title != "" {
+		article.Title = title
+	}
+	if content != "" {
+		article.Content = content
+	}
+	article.LatestUpdate = time.Now()
+	return &article
+}
