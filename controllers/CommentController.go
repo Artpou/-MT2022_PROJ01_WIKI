@@ -2,22 +2,35 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/Artpou/wiki_golang/handler"
 	"github.com/Artpou/wiki_golang/models"
+	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 )
 
 func GetComment(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-
+	vars := mux.Vars(r)
+	id := vars["id"]
+	uid64, err := strconv.ParseUint(id, 10, 64)
+	if err != nil {
+		handler.RespondError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+	uid := uint(uid64)
+	comment := models.Comment{}
+	if err := db.First(&comment, models.Comment{ID: uid}).Error; err != nil {
+		handler.RespondError(w, http.StatusNotFound, err.Error())
+		return
+	}
+	handler.RespondJSON(w, http.StatusOK, comment)
 }
 
 func GetComments(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	comments := []models.Comment{}
 	db.Find(&comments)
-	fmt.Println(comments)
 	handler.RespondJSON(w, http.StatusOK, comments)
 }
 
@@ -29,6 +42,14 @@ func CreateComment(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer r.Body.Close()
+	if rawComment.ArticleID == 0 {
+		handler.RespondError(w, http.StatusBadRequest, "ArticleID is missing")
+		return
+	}
+	if rawComment.Content == "" {
+		handler.RespondError(w, http.StatusBadRequest, "Content is missing")
+		return
+	}
 	comment := models.NewComment(rawComment.ArticleID, rawComment.Content)
 	if err := db.Save(&comment).Error; err != nil {
 		handler.RespondError(w, http.StatusInternalServerError, err.Error())

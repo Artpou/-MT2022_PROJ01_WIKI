@@ -23,16 +23,26 @@ func GetArticles(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 
 func GetArticle(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	key := vars["id"]
-	u, err := strconv.ParseUint(key, 10, 64)
-	if err == nil {
-		u := uint(u)
-		article := db.First(models.Article{}, u)
-		fmt.Println("Success : getting Article N.", key)
-		handler.RespondJSON(w, http.StatusOK, article)
-	} else {
-		fmt.Println("Error : ID is not an integer", key)
+	id := vars["id"]
+	uid64, err := strconv.ParseUint(id, 10, 64)
+	if err != nil {
+		handler.RespondError(w, http.StatusBadRequest, err.Error())
+		return
 	}
+	uid := uint(uid64)
+	article := models.Article{}
+	if err := db.First(&article, models.Article{ID: uid}).Error; err != nil {
+		handler.RespondError(w, http.StatusNotFound, err.Error())
+		return
+	}
+
+	comments := []models.Comment{}
+	if err := db.Find(&comments, models.Comment{ArticleID: uid}).Error; err != nil {
+		handler.RespondError(w, http.StatusNotFound, err.Error())
+		return
+	}
+
+	handler.RespondJSON(w, http.StatusOK, models.ArticleWithComments{article, comments})
 }
 
 func CreateArticle(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
@@ -43,6 +53,14 @@ func CreateArticle(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer r.Body.Close()
+	if rawArticle.Title == "" {
+		handler.RespondError(w, http.StatusBadRequest, "Title is missing")
+		return
+	}
+	if rawArticle.Content == "" {
+		handler.RespondError(w, http.StatusBadRequest, "Content is missing")
+		return
+	}
 	article := models.NewArticle(rawArticle.Title, rawArticle.Content)
 	if err := db.Save(&article).Error; err != nil {
 		handler.RespondError(w, http.StatusInternalServerError, err.Error())

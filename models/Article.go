@@ -16,6 +16,11 @@ type Article struct {
 	LatestUpdate time.Time
 }
 
+type ArticleWithComments struct {
+	Article
+	Comments []Comment
+}
+
 func NewArticle(title string, content string) *Article {
 	article := Article{Title: title, Content: content}
 	article.AuthorID = 1

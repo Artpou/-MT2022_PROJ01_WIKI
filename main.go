@@ -57,15 +57,15 @@ func homeLink(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Welcome")
 }
 
-func getUsers(w http.ResponseWriter, r *http.Request){
-	controllers.GetUsers(db, w ,r)
+func getUsers(w http.ResponseWriter, r *http.Request) {
+	controllers.GetUsers(db, w, r)
 }
 
-func getUser(w http.ResponseWriter, r *http.Request){
+func getUser(w http.ResponseWriter, r *http.Request) {
 	controllers.GetUser(db, w, r)
 }
 
-func createUser(w http.ResponseWriter, r *http.Request){
+func createUser(w http.ResponseWriter, r *http.Request) {
 	controllers.CreateUser(db, w, r)
 }
 
@@ -112,21 +112,21 @@ func deleteArticle(w http.ResponseWriter, r *http.Request) {
 // COMMENTS
 
 func getComments(w http.ResponseWriter, r *http.Request) {
-	controllers.GetComments(w, r)
+	controllers.GetComments(db, w, r)
 }
 
 func getComment(w http.ResponseWriter, r *http.Request) {
-	controllers.GetComment(w, r)
+	controllers.GetComment(db, w, r)
 }
 
 func createComment(w http.ResponseWriter, r *http.Request) {
-	controllers.CreateComment(w, r)
+	controllers.CreateComment(db, w, r)
 }
 
 func updateComment(w http.ResponseWriter, r *http.Request) {
-	controllers.UpdateComment(w, r)
+	controllers.UpdateComment(db, w, r)
 }
 
 func deleteComment(w http.ResponseWriter, r *http.Request) {
-	controllers.DeleteComment(w, r)
+	controllers.DeleteComment(db, w, r)
 }
