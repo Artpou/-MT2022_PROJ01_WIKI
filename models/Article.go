@@ -7,15 +7,9 @@ import (
 )
 
 type Article struct {
-<<<<<<< HEAD
-	ID           uint 	`gorm:"primaryKey"`
-	AuthorID     uint		`gorm:"not null"`
-	User         User 	`gorm:"foreignKey:AuthorID"`
-=======
 	ID           uint   `gorm:"primaryKey"`
 	AuthorID     uint   `gorm:"not null"`
 	User         User   `gorm:"foreignKey:AuthorID"  json:"-"`
->>>>>>> 0b914ca917d689ab04fe85748db34a24fb44a3c6
 	Title        string `gorm:"not null;size:255"`
 	Content      string `gorm:"not null;size:10000"`
 	CreationDate time.Time
