@@ -1,5 +1,7 @@
 # WIKI_GOLANG API DOCUMENTATION
 
+This is an API Documentaion of a Wiki. This application was created in Go for a school project, in this app you can read article and comment this. You can login for update article and moderate comments.
+
 ## Open Endpoints
 
 * [Login](docs/login.md) : `POST /api/login/`
