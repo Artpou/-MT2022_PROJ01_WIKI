@@ -8,17 +8,17 @@ import (
 
 type Comment struct {
 	ID           uint `gorm:"primaryKey"`
-	//User         User
 	AuthorID     uint
-	Article      Article
+	User         User `gorm:"foreignKey:AuthorID" json:"-"`
 	ArticleID    uint
-	Content      string `gorm:"size:500"`
+	Article      Article `gorm:"foreignKey:ArticleID" json:"-"`
+	Content      string  `gorm:"size:500"`
 	CreationDate time.Time
 	LatestUpdate time.Time
 }
 
-func NewComment(content string) *Comment {
-	comment := Comment{Content: content}
+func NewComment(articleID uint, content string) *Comment {
+	comment := Comment{Content: content, ArticleID: articleID}
 	comment.AuthorID = 1
 	comment.CreationDate = time.Now()
 	comment.LatestUpdate = time.Now()

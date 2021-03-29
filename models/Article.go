@@ -7,9 +7,9 @@ import (
 )
 
 type Article struct {
-	ID           uint 	`gorm:"primaryKey"`
+	ID           uint `gorm:"primaryKey"`
 	AuthorID     uint
-	User         User 	`gorm:"foreignKey:AuthorID"`
+	User         User   `gorm:"foreignKey:AuthorID" json:"-"`
 	Title        string `gorm:"size:255"`
 	Content      string `gorm:"size:10000"`
 	CreationDate time.Time
