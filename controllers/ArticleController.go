@@ -70,18 +70,34 @@ func CreateArticle(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateArticle(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	/*var title, content string
-	  vars := mux.Vars(r)
-		key := vars["id"]
-	  u, err := strconv.ParseUint(key, 10, 64)
-		if err == nil {
-	    u := uint(u)
-	    article := db.First(models.Article{}, u)
-	  	reqBody, _ := ioutil.ReadAll(r.Body)
-	    db.Model(&article).Update()
-	  	fmt.Println("Success : updating Article N.", key)
-	  	json.NewEncoder(w).Encode(article)
-	  }*/
+	vars := mux.Vars(r)
+	id := vars["id"]
+	uid64, err := strconv.ParseUint(id, 10, 64)
+	if err != nil {
+		handler.RespondError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+	uid := uint(uid64)
+	oldArticle := models.Article{}
+	newArticle := models.Article{}
+	if err := db.First(&oldArticle, models.Article{ID: uid}).Error; err != nil {
+		handler.RespondError(w, http.StatusNotFound, err.Error())
+		return
+	}
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&newArticle); err != nil {
+		handler.RespondError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+	defer r.Body.Close()
+
+	savedUser := models.UpdateArticle(oldArticle, newArticle.Title, newArticle.Content)
+
+	if err := db.Save(&savedUser).Error; err != nil {
+		handler.RespondError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+	handler.RespondJSON(w, http.StatusOK, savedUser)
 }
 
 func DeleteArticle(w http.ResponseWriter, r *http.Request) {
