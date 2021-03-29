@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -26,6 +25,14 @@ func CreateUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer r.Body.Close()
+	if rawUser.Username == "" {
+		handler.RespondError(w, http.StatusBadRequest, "Username is missing")
+		return
+	}
+	if rawUser.Password == "" {
+		handler.RespondError(w, http.StatusBadRequest, "Password is missing")
+		return
+	}
 	user := models.NewUser(rawUser.Username, rawUser.Password)
 	if err := db.Save(&user).Error; err != nil {
 		handler.RespondError(w, http.StatusInternalServerError, err.Error())
@@ -36,17 +43,19 @@ func CreateUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 
 func GetUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	key := vars["id"]
-	u, err := strconv.ParseUint(key, 10, 64)
-	if err == nil {
-		u := uint(u)
-		article := db.First(models.Article{}, u)
-		fmt.Println("Success : getting Article N.", key)
-		fmt.Println(article)
-		json.NewEncoder(w).Encode(article)
-	} else {
-		fmt.Println("Error : ID is not an integer", key)
+	id 	 := vars["id"]
+	uid64, err  := strconv.ParseUint(id, 10, 64)
+	if err != nil {
+		handler.RespondError(w, http.StatusBadRequest, err.Error())
+		return
 	}
+	uid := uint(uid64)
+	user := models.User{}
+	if err := db.First(&user, models.User{ID: uid}).Error; err != nil {
+		handler.RespondError(w, http.StatusNotFound, err.Error())
+		return
+	}
+	handler.RespondJSON(w, http.StatusOK, user)
 }
 
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
