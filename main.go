@@ -41,10 +41,10 @@ func handleRequests() {
 	router.HandleFunc("/api/articles/{id}", updateArticle).Methods("PUT")
 	router.HandleFunc("/api/articles/{id}", deleteArticle).Methods("DELETE")
 
-	// User methods
+	// Users (à modifier)
 	router.HandleFunc("/api/users", getUsers).Methods("GET")
 	router.HandleFunc("/api/users", createUser).Methods("POST")
-	router.HandleFunc("/api/users", deleteSelf).Methods("DELETE")
+	router.HandleFunc("/api/users/{id}", deleteUser).Methods("DELETE")
 	router.HandleFunc("/api/users/{id}", getUser).Methods("GET")
 	router.HandleFunc("/api/users/{id}", updateUser).Methods("PUT")
 
@@ -72,6 +72,10 @@ func updateUser(w http.ResponseWriter, r *http.Request){
 
 func createUser(w http.ResponseWriter, r *http.Request){
 	controllers.CreateUser(db, w, r)
+}
+
+func deleteUser(w http.ResponseWriter, r *http.Request){
+	controllers.DeleteUser(db, w, r)
 }
 
 func showInfo(w http.ResponseWriter, r *http.Request) {

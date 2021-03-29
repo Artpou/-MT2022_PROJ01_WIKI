@@ -94,10 +94,25 @@ func UpdateUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	handler.RespondJSON(w, http.StatusOK, savedUser)
 }
 
-func DeleteUser(w http.ResponseWriter, r *http.Request) {
-	/*w.WriteHeader(http.StatusCreated)
-	user := models.NewUser("test", "1234")
-	w.Write([]byte(views.DeleteUser(*user)))*/
+func DeleteUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	uid64, err  := strconv.ParseUint(id, 10, 64)
+	if err != nil {
+		handler.RespondError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+	uid := uint(uid64)
+	user := models.User{}
+	if err := db.First(&user, models.User{ID: uid}).Error; err != nil {
+		handler.RespondError(w, http.StatusNotFound, err.Error())
+		return
+	}
+	if err := db.Delete(&user).Error; err != nil {
+		handler.RespondError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+	handler.RespondJSON(w, http.StatusNoContent, nil)
 }
 
 func GetSelf(w http.ResponseWriter, r *http.Request) {
