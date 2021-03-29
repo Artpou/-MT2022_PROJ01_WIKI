@@ -7,10 +7,10 @@ import (
 )
 
 type Article struct {
-	ID           uint `gorm:"primaryKey"`
-	//User         User
+	ID           uint 	`gorm:"primaryKey"`
 	AuthorID     uint
-	Title        string
+	User         User 	`gorm:"foreignKey:AuthorID"`
+	Title        string `gorm:"size:255"`
 	Content      string `gorm:"size:10000"`
 	CreationDate time.Time
 	LatestUpdate time.Time

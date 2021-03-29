@@ -3,7 +3,6 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"strconv"
 
@@ -20,20 +19,19 @@ func GetUsers(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	user := models.User{}
+	rawUser := models.User{}
 	decoder := json.NewDecoder(r.Body)
-	if err := decoder.Decode(&user); err != nil {
-	}
-	reqBody, _ := ioutil.ReadAll(r.Body)
-	response , err := json.Marshal(reqBody)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(err.Error()))
+	if err := decoder.Decode(&rawUser); err != nil {
+		handler.RespondError(w, http.StatusBadRequest, err.Error())
 		return
 	}
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(response))
+	defer r.Body.Close()
+	user := models.NewUser(rawUser.Username, rawUser.Password)
+	if err := db.Save(&user).Error; err != nil {
+		handler.RespondError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+	handler.RespondJSON(w, http.StatusCreated, user)
 }
 
 func GetUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
