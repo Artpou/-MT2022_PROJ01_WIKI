@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"github.com/Artpou/wiki_golang/handler/respond"
+	"github.com/Artpou/wiki_golang/handler/jwt"
 	"github.com/Artpou/wiki_golang/models"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
@@ -90,6 +91,16 @@ func UpdateArticle(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 		respond.RespondError(w, http.StatusNotFound, err.Error())
 		return
 	}
+	claims, err := jwt.GetClaims(r)
+	if err != nil {
+		respond.RespondError(w, http.StatusUnauthorized, err.Error())
+		return
+	}
+	authorID := claims.ID
+	if oldArticle.AuthorID != authorID{
+		respond.RespondError(w, http.StatusForbidden, "You don't have permission to update this article")
+		return
+	}
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&newArticle); err != nil {
 		respond.RespondError(w, http.StatusBadRequest, err.Error())
@@ -121,6 +132,16 @@ func DeleteArticle(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	article := models.Article{}
 	if err := db.First(&article, models.Article{ID: uid}).Error; err != nil {
 		respond.RespondError(w, http.StatusNotFound, err.Error())
+		return
+	}
+	claims, err := jwt.GetClaims(r)
+	if err != nil {
+		respond.RespondError(w, http.StatusUnauthorized, err.Error())
+		return
+	}
+	authorID := claims.ID
+	if article.AuthorID != authorID{
+		respond.RespondError(w, http.StatusForbidden, "You don't have permission to delete this article")
 		return
 	}
 	if err := db.Delete(&article).Error; err != nil {
