@@ -12,6 +12,10 @@ func InvalidToken() string {
 	return "the token is invalid"
 }
 
+func Logout() string {
+	return "you have been successfully logout"
+}
+
 func Authenticated() string {
 	return "you are connected"
 }

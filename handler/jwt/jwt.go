@@ -10,7 +10,7 @@ import (
 )
 
 type Claims struct {
-	ID uint							 `json:"id"`
+	ID       uint        `json:"id"`
 	Username string      `json:"username"`
 	Role     models.Role `json:"role"`
 	jwt.StandardClaims
@@ -42,9 +42,9 @@ func GetToken(r *http.Request) (*jwt.Token, error) {
 }
 
 func SetToken(user models.User, w http.ResponseWriter) (*http.Cookie, error) {
-	expirationTime := time.Now().Add(5 * time.Minute)
+	expirationTime := time.Now().Add(60 * time.Minute)
 	claims := &Claims{
-		ID : user.ID,
+		ID:       user.ID,
 		Username: user.Username,
 		Role:     user.Role,
 		StandardClaims: jwt.StandardClaims{
@@ -67,6 +67,16 @@ func SetToken(user models.User, w http.ResponseWriter) (*http.Cookie, error) {
 	http.SetCookie(w, tknCookie)
 
 	return tknCookie, err
+}
+
+func DeleteToken(w http.ResponseWriter) {
+	deleteCookie := &http.Cookie{
+		Name:    "token",
+		Value:   "tokenString",
+		Expires: time.Now(),
+	}
+
+	http.SetCookie(w, deleteCookie)
 }
 
 func GetClaims(r *http.Request) (*Claims, error) {

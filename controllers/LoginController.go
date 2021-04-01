@@ -80,10 +80,11 @@ func Signin(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 }
 
 func Logout(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	if !IsAuthenticated(w,r){
+	if !IsAuthenticated(w, r) {
 		return
 	}
-	
+	jwt.DeleteToken(w)
+	respond.RespondJSON(w, http.StatusFound, views.Logout())
 }
 
 func CheckAuth(w http.ResponseWriter, r *http.Request) {

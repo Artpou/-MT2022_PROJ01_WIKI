@@ -1,13 +1,14 @@
 package router
 
 import (
-  "log"
-  "fmt"
-  "net/http"
-  "github.com/Artpou/wiki_golang/controllers"
-  "github.com/Artpou/wiki_golang/database"
-  "github.com/gorilla/mux"
-  "github.com/jinzhu/gorm"
+	"fmt"
+	"log"
+	"net/http"
+
+	"github.com/Artpou/wiki_golang/controllers"
+	"github.com/Artpou/wiki_golang/database"
+	"github.com/gorilla/mux"
+	"github.com/jinzhu/gorm"
 )
 
 var db *gorm.DB
@@ -15,10 +16,11 @@ var db *gorm.DB
 func HandleRequests() {
 	log.Println("Starting development server at http://127.0.0.1:10000/")
 	router := mux.NewRouter().StrictSlash(true)
-  db = database.InitDb()
+	db = database.InitDb()
 	//Login
 	router.HandleFunc("/", HomeLink)
 	router.HandleFunc("/api/login/", Login).Methods("POST")
+	router.HandleFunc("/api/logout/", Logout).Methods("GET")
 	router.HandleFunc("/api/checkAuth/", CheckAuth).Methods("GET")
 	router.HandleFunc("/api/checkAdmin/", CheckAdmin).Methods("GET")
 
@@ -54,7 +56,6 @@ func HandleRequests() {
 	log.Fatal(http.ListenAndServe(":10000", router))
 }
 
-
 //LOGIN
 
 func HomeLink(w http.ResponseWriter, r *http.Request) {
@@ -63,6 +64,10 @@ func HomeLink(w http.ResponseWriter, r *http.Request) {
 
 func Login(w http.ResponseWriter, r *http.Request) {
 	controllers.Signin(db, w, r)
+}
+
+func Logout(w http.ResponseWriter, r *http.Request) {
+	controllers.Logout(db, w, r)
 }
 
 func CheckAuth(w http.ResponseWriter, r *http.Request) {
