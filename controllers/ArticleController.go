@@ -2,12 +2,12 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 
 	"github.com/Artpou/wiki_golang/handler/respond"
 	"github.com/Artpou/wiki_golang/models"
+	"github.com/Artpou/wiki_golang/views"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 )
@@ -17,7 +17,6 @@ import (
 func GetArticles(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	articles := []models.Article{}
 	db.Find(&articles)
-	fmt.Println(articles)
 	respond.RespondJSON(w, http.StatusOK, articles)
 }
 
@@ -32,17 +31,17 @@ func GetArticle(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	uid := uint(uid64)
 	article := models.Article{}
 	if err := db.First(&article, models.Article{ID: uid}).Error; err != nil {
-		respond.RespondError(w, http.StatusNotFound, err.Error())
+		respond.RespondError(w, http.StatusNotFound, views.FieldNotFound("Article"))
 		return
 	}
 
 	comments := []models.Comment{}
 	if err := db.Find(&comments, models.Comment{ArticleID: uid}).Error; err != nil {
-		respond.RespondError(w, http.StatusNotFound, err.Error())
+		respond.RespondError(w, http.StatusNotFound, views.FieldNotFound("Comment"))
 		return
 	}
 
-	respond.RespondJSON(w, http.StatusOK, models.ArticleWithComments{article, comments})
+	respond.RespondJSON(w, http.StatusOK, models.NewArticleWithComments(article, comments))
 }
 
 func CreateArticle(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
@@ -57,11 +56,11 @@ func CreateArticle(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 	if rawArticle.Title == "" {
-		respond.RespondError(w, http.StatusBadRequest, "Title is missing")
+		respond.RespondError(w, http.StatusBadRequest, views.FieldRequiered("Title"))
 		return
 	}
 	if rawArticle.Content == "" {
-		respond.RespondError(w, http.StatusBadRequest, "Content is missing")
+		respond.RespondError(w, http.StatusBadRequest, views.FieldRequiered("Content"))
 		return
 	}
 	article := models.NewArticle(rawArticle.Title, rawArticle.Content)
@@ -87,7 +86,7 @@ func UpdateArticle(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	oldArticle := models.Article{}
 	newArticle := models.Article{}
 	if err := db.First(&oldArticle, models.Article{ID: uid}).Error; err != nil {
-		respond.RespondError(w, http.StatusNotFound, err.Error())
+		respond.RespondError(w, http.StatusNotFound, views.FieldNotFound("Article"))
 		return
 	}
 	decoder := json.NewDecoder(r.Body)
@@ -120,7 +119,7 @@ func DeleteArticle(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	uid := uint(uid64)
 	article := models.Article{}
 	if err := db.First(&article, models.Article{ID: uid}).Error; err != nil {
-		respond.RespondError(w, http.StatusNotFound, err.Error())
+		respond.RespondError(w, http.StatusNotFound, views.FieldNotFound("Article"))
 		return
 	}
 	if err := db.Delete(&article).Error; err != nil {

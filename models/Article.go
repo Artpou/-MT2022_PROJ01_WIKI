@@ -8,25 +8,40 @@ import (
 
 type Article struct {
 	ID           uint   `gorm:"primaryKey"`
+	User         User   `gorm:"foreignKey:AuthorID" `
 	AuthorID     uint   `gorm:"not null"`
-	User         User   `gorm:"foreignKey:AuthorID"  json:"-"`
 	Title        string `gorm:"not null;size:255"`
 	Content      string `gorm:"not null;size:10000"`
-	CreationDate time.Time
-	LatestUpdate time.Time
+	CreationDate JSONTime
+	LatestUpdate JSONTime
+}
+
+type ArticleWithOwner struct {
+	Owner string
+	Article
 }
 
 type ArticleWithComments struct {
-	Article
+	Article  *ArticleWithOwner
 	Comments []Comment
 }
 
 func NewArticle(title string, content string) *Article {
 	article := Article{Title: title, Content: content}
 	article.AuthorID = 1
-	article.CreationDate = time.Now()
-	article.LatestUpdate = time.Now()
+	article.CreationDate = JSONTime(time.Now())
+	article.LatestUpdate = JSONTime(time.Now())
 	return &article
+}
+
+func NewArticleWithOwner(article Article) *ArticleWithOwner {
+	articleOwner := ArticleWithOwner{Owner: article.User.Username, Article: article}
+	return &articleOwner
+}
+
+func NewArticleWithComments(article Article, comments []Comment) *ArticleWithComments {
+	articleComments := ArticleWithComments{Article: NewArticleWithOwner(article), Comments: comments}
+	return &articleComments
 }
 
 func UpdateArticle(article Article, title string, content string) *Article {
@@ -36,6 +51,6 @@ func UpdateArticle(article Article, title string, content string) *Article {
 	if content != "" {
 		article.Content = content
 	}
-	article.LatestUpdate = time.Now()
+	article.LatestUpdate = JSONTime(time.Now())
 	return &article
 }

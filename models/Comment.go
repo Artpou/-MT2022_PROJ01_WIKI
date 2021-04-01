@@ -9,19 +9,19 @@ import (
 type Comment struct {
 	ID           uint    `gorm:"primaryKey"`
 	AuthorID     uint    `gorm:"not null"`
-	User         User    `gorm:"foreignKey:AuthorID" json:"-"`
+	User         User    `gorm:"foreignKey:AuthorID"`
 	ArticleID    uint    `gorm:"not null"`
-	Article      Article `gorm:"foreignKey:ArticleID" json:"-"`
+	Article      Article `gorm:"foreignKey:ArticleID"`
 	Content      string  `gorm:"not null;size:500"`
-	CreationDate time.Time
-	LatestUpdate time.Time
+	CreationDate JSONTime
+	LatestUpdate JSONTime
 }
 
 func NewComment(articleID uint, content string) *Comment {
 	comment := Comment{Content: content, ArticleID: articleID}
 	comment.AuthorID = 1
-	comment.CreationDate = time.Now()
-	comment.LatestUpdate = time.Now()
+	comment.CreationDate = JSONTime(time.Now())
+	comment.LatestUpdate = JSONTime(time.Now())
 	return &comment
 }
 
@@ -29,6 +29,6 @@ func UpdateComment(article Comment, content string) *Comment {
 	if content != "" {
 		article.Content = content
 	}
-	article.LatestUpdate = time.Now()
+	article.LatestUpdate = JSONTime(time.Now())
 	return &article
 }

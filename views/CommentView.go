@@ -6,8 +6,8 @@ import (
 	"github.com/Artpou/wiki_golang/models"
 )
 
-func GetComment(comment models.Comment) string {
-	return fmt.Sprintf(`{ID: %d}`, comment.ID)
+func CommentNotFound() string {
+	return "this comment cannot be found"
 }
 
 func GetComments() string {
