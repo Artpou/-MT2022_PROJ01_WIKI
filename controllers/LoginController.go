@@ -8,6 +8,7 @@ import (
 	"github.com/Artpou/wiki_golang/handler/password"
 	"github.com/Artpou/wiki_golang/handler/respond"
 	"github.com/Artpou/wiki_golang/models"
+	"github.com/Artpou/wiki_golang/views"
 	"github.com/jinzhu/gorm"
 )
 
@@ -20,11 +21,11 @@ func IsAuthenticated(w http.ResponseWriter, r *http.Request) bool {
 	tkn, err := jwt.GetToken(r)
 
 	if err != nil {
-		respond.RespondError(w, http.StatusUnauthorized, "you need to be authenticated to do this")
+		respond.RespondError(w, http.StatusUnauthorized, views.NeedAuthentication())
 		return false
 	}
 	if !tkn.Valid {
-		respond.RespondError(w, http.StatusUnauthorized, "invalid token")
+		respond.RespondError(w, http.StatusUnauthorized, views.InvalidToken())
 		return false
 	}
 
@@ -43,7 +44,7 @@ func IsAdmin(w http.ResponseWriter, r *http.Request) bool {
 	}
 	role := claims.Role
 	if role != models.AdminRole {
-		respond.RespondError(w, http.StatusUnauthorized, "you need to be administrator to do this")
+		respond.RespondError(w, http.StatusUnauthorized, views.NeedAdministrator())
 		return false
 	}
 
@@ -60,12 +61,12 @@ func Signin(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 
 	user := models.User{}
 	if err := db.First(&user, models.User{Username: creds.Username}).Error; err != nil {
-		respond.RespondError(w, http.StatusNotFound, "Username doesn't exist")
+		respond.RespondError(w, http.StatusNotFound, views.WrongUsername())
 		return
 	}
 
 	if !password.CheckPasswordHash(creds.Password, user.Password) {
-		respond.RespondError(w, http.StatusUnauthorized, "Wrong password")
+		respond.RespondError(w, http.StatusUnauthorized, views.WrongPassword())
 		return
 	}
 
@@ -87,12 +88,12 @@ func Logout(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 
 func CheckAuth(w http.ResponseWriter, r *http.Request) {
 	if IsAuthenticated(w, r) {
-		respond.RespondJSON(w, http.StatusFound, "You are authenticated")
+		respond.RespondJSON(w, http.StatusFound, views.Authenticated())
 	}
 }
 
 func CheckAdmin(w http.ResponseWriter, r *http.Request) {
 	if IsAdmin(w, r) {
-		respond.RespondJSON(w, http.StatusFound, "You are administrator")
+		respond.RespondJSON(w, http.StatusFound, views.Administrator())
 	}
 }

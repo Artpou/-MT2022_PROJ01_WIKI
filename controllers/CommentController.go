@@ -8,6 +8,7 @@ import (
 	"github.com/Artpou/wiki_golang/handler/respond"
 	"github.com/Artpou/wiki_golang/handler/jwt"
 	"github.com/Artpou/wiki_golang/models"
+	"github.com/Artpou/wiki_golang/views"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 )
@@ -23,7 +24,7 @@ func GetComment(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	uid := uint(uid64)
 	comment := models.Comment{}
 	if err := db.First(&comment, models.Comment{ID: uid}).Error; err != nil {
-		respond.RespondError(w, http.StatusNotFound, err.Error())
+		respond.RespondError(w, http.StatusNotFound, views.FieldNotFound("Comment"))
 		return
 	}
 	respond.RespondJSON(w, http.StatusOK, comment)
@@ -47,11 +48,11 @@ func CreateComment(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 	if rawComment.ArticleID == 0 {
-		respond.RespondError(w, http.StatusBadRequest, "ArticleID is missing")
+		respond.RespondError(w, http.StatusBadRequest, views.FieldRequiered("ArticleID"))
 		return
 	}
 	if rawComment.Content == "" {
-		respond.RespondError(w, http.StatusBadRequest, "Content is missing")
+		respond.RespondError(w, http.StatusBadRequest, views.FieldRequiered("Content"))
 		return
 	}
 	comment := models.NewComment(rawComment.ArticleID, rawComment.Content)
@@ -77,7 +78,7 @@ func UpdateComment(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	oldComment := models.Comment{}
 	newComment := models.Comment{}
 	if err := db.First(&oldComment, models.Comment{ID: uid}).Error; err != nil {
-		respond.RespondError(w, http.StatusNotFound, err.Error())
+		respond.RespondError(w, http.StatusNotFound, views.FieldNotFound("Comment"))
 		return
 	}
 	claims, err := jwt.GetClaims(r)
@@ -120,7 +121,7 @@ func DeleteComment(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	uid := uint(uid64)
 	comment := models.Comment{}
 	if err := db.First(&comment, models.Comment{ID: uid}).Error; err != nil {
-		respond.RespondError(w, http.StatusNotFound, err.Error())
+		respond.RespondError(w, http.StatusNotFound, views.FieldNotFound("Comment"))
 		return
 	}
 	claims, err := jwt.GetClaims(r)

@@ -16,25 +16,25 @@ const (
 
 type User struct {
 	ID           uint   `gorm:"primaryKey"`
-	Username     string `gorm:"unique;not null;size:255" json:"username"`
-	Password     string `gorm:"not null;size:255" json:"password"`
+	Username     string `gorm:"unique;not null;size:255"`
+	Password     string `gorm:"not null;size:255"`
 	Role         Role   `json:"role"`
-	CreationDate time.Time
-	LatestUpdate time.Time
+	CreationDate JSONTime
+	LatestUpdate JSONTime
 }
 
 func NewUser(username string, user_password string) *User {
 	hash, _ := password.HashPassword(user_password)
 	user := User{Username: username, Password: hash}
-	user.Role = UserRole
-	user.CreationDate = time.Now()
-	user.LatestUpdate = time.Now()
+	user.Role = AdminRole
+	user.CreationDate = JSONTime(time.Now())
+	user.LatestUpdate = JSONTime(time.Now())
 	return &user
 }
 
 func UpdateUser(user User, user_password string) *User {
 	hash, _ := password.HashPassword(user_password)
 	user.Password = hash
-	user.LatestUpdate = time.Now()
+	user.LatestUpdate = JSONTime(time.Now())
 	return &user
 }
