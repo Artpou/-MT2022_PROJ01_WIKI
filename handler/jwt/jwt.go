@@ -10,6 +10,7 @@ import (
 )
 
 type Claims struct {
+	ID uint							 `json:"id"`
 	Username string      `json:"username"`
 	Role     models.Role `json:"role"`
 	jwt.StandardClaims
@@ -43,6 +44,7 @@ func GetToken(r *http.Request) (*jwt.Token, error) {
 func SetToken(user models.User, w http.ResponseWriter) (*http.Cookie, error) {
 	expirationTime := time.Now().Add(5 * time.Minute)
 	claims := &Claims{
+		ID : user.ID,
 		Username: user.Username,
 		Role:     user.Role,
 		StandardClaims: jwt.StandardClaims{
@@ -67,14 +69,14 @@ func SetToken(user models.User, w http.ResponseWriter) (*http.Cookie, error) {
 	return tknCookie, err
 }
 
-func GetRole(r *http.Request) (models.Role, error) {
+func GetClaims(r *http.Request) (*Claims, error) {
 	claims := &Claims{}
 	tknHeader, err := GetToken(r)
 	if err != nil {
-		return models.UserRole, err
+		return claims, err
 	}
 	jwt.ParseWithClaims(tknHeader.Raw, claims, func(token *jwt.Token) (interface{}, error) {
 		return jwtKey, nil
 	})
-	return claims.Role, nil
+	return claims, nil
 }

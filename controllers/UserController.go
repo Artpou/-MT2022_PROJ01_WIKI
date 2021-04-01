@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/Artpou/wiki_golang/handler/respond"
+	"github.com/Artpou/wiki_golang/handler/jwt"
 	"github.com/Artpou/wiki_golang/models"
 	"github.com/Artpou/wiki_golang/views"
 	"github.com/gorilla/mux"
@@ -13,6 +14,9 @@ import (
 )
 
 func GetUsers(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+	if !IsAdmin(w, r) {
+		return
+	}
 	users := []models.User{}
 	db.Find(&users)
 	respond.RespondJSON(w, http.StatusOK, users)
@@ -46,6 +50,9 @@ func CreateUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 }
 
 func GetUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+	if !IsAdmin(w, r) {
+		return
+	}
 	vars := mux.Vars(r)
 	id := vars["id"]
 	uid64, err := strconv.ParseUint(id, 10, 64)
@@ -125,20 +132,79 @@ func DeleteUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	respond.RespondJSON(w, http.StatusNoContent, nil)
 }
 
-func GetSelf(w http.ResponseWriter, r *http.Request) {
-	/*w.WriteHeader(http.StatusCreated)
-	user := models.NewUser("test", "1234")
-	w.Write([]byte(views.ShowUser(*user)))*/
+func GetSelf(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+	if !IsAuthenticated(w, r) {
+		return
+	}
+	claims, err := jwt.GetClaims(r)
+	if err != nil {
+		respond.RespondError(w, http.StatusUnauthorized, err.Error())
+		return
+	}
+	username := claims.Username
+	user := models.User{}
+	if err := db.First(&user, models.User{Username: username}).Error; err != nil {
+		respond.RespondError(w, http.StatusNotFound, err.Error())
+		return
+	}
+	respond.RespondJSON(w, http.StatusOK, user)
 }
 
-func UpdateSelf(w http.ResponseWriter, r *http.Request) {
-	/*w.WriteHeader(http.StatusCreated)
-	user := models.NewUser("test", "1234")
-	w.Write([]byte(views.UpdateUser(*user)))*/
+func UpdateSelf(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+	if !IsAuthenticated(w, r) {
+		return
+	}
+	claims, err := jwt.GetClaims(r)
+	if err != nil {
+		respond.RespondError(w, http.StatusUnauthorized, err.Error())
+		return
+	}
+		username := claims.Username
+	oldUser := models.User{}
+	newUser := models.User{}
+	if err := db.First(&oldUser, models.User{Username: username}).Error; err != nil {
+		respond.RespondError(w, http.StatusNotFound, err.Error())
+		return
+	}
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&newUser); err != nil {
+		respond.RespondError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+	defer r.Body.Close()
+
+	if newUser.Password == "" {
+		respond.RespondError(w, http.StatusBadRequest, "Password is missing")
+		return
+	}
+
+	updatedUser := models.UpdateUser(oldUser, newUser.Password)
+
+	if err := db.Save(&updatedUser).Error; err != nil {
+		respond.RespondError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+	respond.RespondJSON(w, http.StatusOK, updatedUser)
 }
 
-func DeleteSelf(w http.ResponseWriter, r *http.Request) {
-	/*w.WriteHeader(http.StatusCreated)
-	user := models.NewUser("test", "1234")
-	w.Write([]byte(views.DeleteUser(*user)))*/
+func DeleteSelf(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+	if !IsAuthenticated(w, r) {
+		return
+	}
+	claims, err := jwt.GetClaims(r)
+	if err != nil {
+		respond.RespondError(w, http.StatusUnauthorized, err.Error())
+		return
+	}
+	username := claims.Username
+	user := models.User{}
+	if err := db.First(&user, models.User{Username: username}).Error; err != nil {
+		respond.RespondError(w, http.StatusNotFound, err.Error())
+		return
+	}
+	if err := db.Delete(&user).Error; err != nil {
+		respond.RespondError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+	respond.RespondJSON(w, http.StatusNoContent, nil)
 }

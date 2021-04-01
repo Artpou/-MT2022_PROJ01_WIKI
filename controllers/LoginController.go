@@ -36,12 +36,13 @@ func IsAdmin(w http.ResponseWriter, r *http.Request) bool {
 	if !IsAuthenticated(w, r) {
 		return false
 	}
-	role, err := jwt.GetRole(r)
+	claims, err := jwt.GetClaims(r)
 
 	if err != nil {
 		respond.RespondError(w, http.StatusUnauthorized, err.Error())
 		return false
 	}
+	role := claims.Role
 	if role != models.AdminRole {
 		respond.RespondError(w, http.StatusUnauthorized, views.NeedAdministrator())
 		return false
@@ -76,6 +77,13 @@ func Signin(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	}
 
 	respond.RespondJSON(w, http.StatusCreated, token)
+}
+
+func Logout(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+	if !IsAuthenticated(w,r){
+		return
+	}
+	
 }
 
 func CheckAuth(w http.ResponseWriter, r *http.Request) {

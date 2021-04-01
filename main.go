@@ -44,12 +44,17 @@ func handleRequests() {
 	router.HandleFunc("/api/articles/{id}", updateArticle).Methods("PUT")
 	router.HandleFunc("/api/articles/{id}", deleteArticle).Methods("DELETE")
 
-	// Users (à modifier)
-	router.HandleFunc("/api/users", getUsers).Methods("GET")
-	router.HandleFunc("/api/users", createUser).Methods("POST")
+	//Users
+	router.HandleFunc("/api/users/", getUsers).Methods("GET")
+	router.HandleFunc("/api/users/", createUser).Methods("POST")
 	router.HandleFunc("/api/users/{id}", deleteUser).Methods("DELETE")
 	router.HandleFunc("/api/users/{id}", getUser).Methods("GET")
 	router.HandleFunc("/api/users/{id}", updateUser).Methods("PUT")
+
+	//Self
+	router.HandleFunc("/api/self/", getSelf).Methods("GET")
+	router.HandleFunc("/api/self/", updateSelf).Methods("PUT")
+	router.HandleFunc("/api/self/", deleteSelf).Methods("DELETE")
 
 	fs := http.FileServer(http.Dir("static/"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
@@ -97,16 +102,16 @@ func deleteUser(w http.ResponseWriter, r *http.Request) {
 	controllers.DeleteUser(db, w, r)
 }
 
-func showInfo(w http.ResponseWriter, r *http.Request) {
-	controllers.GetSelf(w, r)
+func getSelf(w http.ResponseWriter, r *http.Request) {
+	controllers.GetSelf(db, w, r)
 }
 
-func updateInfo(w http.ResponseWriter, r *http.Request) {
-	controllers.UpdateSelf(w, r)
+func updateSelf(w http.ResponseWriter, r *http.Request) {
+	controllers.UpdateSelf(db, w, r)
 }
 
 func deleteSelf(w http.ResponseWriter, r *http.Request) {
-	controllers.DeleteSelf(w, r)
+	controllers.DeleteSelf(db, w, r)
 }
 
 //ARTICLES
