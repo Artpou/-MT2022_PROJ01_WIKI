@@ -2,6 +2,12 @@
 
 This is an API Documentaion of a Wiki. This application was created in Go for a school project, in this app you can read article and comment this. You can login for update article and moderate comments.
 
+## Contributeurs
+ 
+* Arthur Poulin
+* Cédric Pierre-Auguste
+* Guillaume Marcel
+
 ## Open Endpoints
 
 * [Login](docs/login.md) : `POST /api/login/`
