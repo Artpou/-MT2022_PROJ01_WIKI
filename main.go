@@ -28,6 +28,7 @@ func handleRequests() {
 	router.HandleFunc("/", homeLink)
 	router.HandleFunc("/api/login/", login).Methods("POST")
 	router.HandleFunc("/api/checkAuth/", checkAuth).Methods("GET")
+	router.HandleFunc("/api/checkAdmin/", checkAdmin).Methods("GET")
 
 	//Comments
 	router.HandleFunc("/api/comments/", getComments).Methods("GET")
@@ -68,6 +69,10 @@ func login(w http.ResponseWriter, r *http.Request) {
 
 func checkAuth(w http.ResponseWriter, r *http.Request) {
 	controllers.CheckAuth(w, r)
+}
+
+func checkAdmin(w http.ResponseWriter, r *http.Request) {
+	controllers.CheckAdmin(w, r)
 }
 
 //USER

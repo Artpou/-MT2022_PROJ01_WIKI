@@ -26,7 +26,7 @@ type User struct {
 func NewUser(username string, user_password string) *User {
 	hash, _ := password.HashPassword(user_password)
 	user := User{Username: username, Password: hash}
-	user.Role = AdminRole
+	user.Role = UserRole
 	user.CreationDate = time.Now()
 	user.LatestUpdate = time.Now()
 	return &user

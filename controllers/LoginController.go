@@ -17,21 +17,35 @@ type Credentials struct {
 }
 
 func IsAuthenticated(w http.ResponseWriter, r *http.Request) bool {
-	isAuth, err := jwt.IsAuthenticated(r)
+	tkn, err := jwt.GetToken(r)
+
 	if err != nil {
-		respond.RespondError(w, http.StatusUnauthorized, err.Error())
+		respond.RespondError(w, http.StatusUnauthorized, "you need to be authenticated to do this")
+		return false
 	}
-	return isAuth
+	if !tkn.Valid {
+		respond.RespondError(w, http.StatusUnauthorized, "invalid token")
+		return false
+	}
+
+	return true
 }
 
-func IsAdmin(user models.User, w http.ResponseWriter, r *http.Request) bool {
-	if IsAuthenticated(w, r) {
+func IsAdmin(w http.ResponseWriter, r *http.Request) bool {
+	if !IsAuthenticated(w, r) {
 		return false
 	}
-	if user.Role != models.AdminRole {
-		respond.RespondError(w, http.StatusUnauthorized, "You need to be administrator to do this")
+	role, err := jwt.GetRole(r)
+
+	if err != nil {
+		respond.RespondError(w, http.StatusUnauthorized, err.Error())
 		return false
 	}
+	if role != models.AdminRole {
+		respond.RespondError(w, http.StatusUnauthorized, "you need to be administrator to do this")
+		return false
+	}
+
 	return true
 }
 
@@ -65,6 +79,12 @@ func Signin(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 
 func CheckAuth(w http.ResponseWriter, r *http.Request) {
 	if IsAuthenticated(w, r) {
-		respond.RespondJSON(w, http.StatusFound, "You are authenticated !")
+		respond.RespondJSON(w, http.StatusFound, "You are authenticated")
+	}
+}
+
+func CheckAdmin(w http.ResponseWriter, r *http.Request) {
+	if IsAdmin(w, r) {
+		respond.RespondJSON(w, http.StatusFound, "You are administrator")
 	}
 }

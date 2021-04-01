@@ -18,7 +18,7 @@ func GetUsers(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	if !IsAuthenticated(w, r) {
+	if !IsAdmin(w, r) {
 		return
 	}
 	rawUser := models.User{}
@@ -62,7 +62,7 @@ func GetUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	if !IsAuthenticated(w, r) {
+	if !IsAdmin(w, r) {
 		return
 	}
 	vars := mux.Vars(r)
@@ -101,7 +101,7 @@ func UpdateUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	if !IsAuthenticated(w, r) {
+	if !IsAdmin(w, r) {
 		return
 	}
 	vars := mux.Vars(r)
