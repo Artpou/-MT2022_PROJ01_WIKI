@@ -1,24 +1,28 @@
-package handler
+package jwt
 
 import (
+	"errors"
 	"net/http"
 	"strings"
 	"time"
 
+	"github.com/Artpou/wiki_golang/models"
 	jwt "github.com/dgrijalva/jwt-go"
 )
 
 type Claims struct {
-	Username string `json:"username"`
+	Username string      `json:"username"`
+	Role     models.Role `json:"role"`
 	jwt.StandardClaims
 }
 
 var jwtKey = []byte("cle_tres_secrete")
 
-func SetToken(username string, w http.ResponseWriter) (*http.Cookie, error) {
+func SetToken(user models.User, w http.ResponseWriter) (*http.Cookie, error) {
 	expirationTime := time.Now().Add(5 * time.Minute)
 	claims := &Claims{
-		Username: username,
+		Username: user.Username,
+		Role:     user.Role,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
 		},
@@ -41,7 +45,11 @@ func SetToken(username string, w http.ResponseWriter) (*http.Cookie, error) {
 	return tknCookie, err
 }
 
-func IsAuthenticated(w http.ResponseWriter, r *http.Request) bool {
+func getToken(r *http.Request) {
+
+}
+
+func IsAuthenticated(r *http.Request) (bool, error) {
 	tknCookie, err := r.Cookie("token")
 	tknHeader := ""
 
@@ -64,13 +72,10 @@ func IsAuthenticated(w http.ResponseWriter, r *http.Request) bool {
 	})
 
 	if err != nil {
-		RespondError(w, http.StatusUnauthorized, "You are not authenticated")
-		return false
+		return false, errors.New("You need to be authenticated to do this")
 	}
 	if !tkn.Valid {
-		RespondError(w, http.StatusUnauthorized, "Invalid Token")
-		return false
+		return false, errors.New("Invalid Token")
 	}
-
-	return true
+	return true, nil
 }
