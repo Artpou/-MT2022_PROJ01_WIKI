@@ -3,24 +3,15 @@ package controllers
 import (
 	"encoding/json"
 	"net/http"
-	"time"
 
 	"github.com/Artpou/wiki_golang/handler"
 	"github.com/Artpou/wiki_golang/models"
-	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/jinzhu/gorm"
 )
-
-var jwtKey = []byte("cle_tres_secrete")
 
 type Credentials struct {
 	Password string `json:"password"`
 	Username string `json:"username"`
-}
-
-type Claims struct {
-	Username string `json:"username"`
-	jwt.StandardClaims
 }
 
 func Signin(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
@@ -42,26 +33,17 @@ func Signin(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	expirationTime := time.Now().Add(5 * time.Minute)
-	claims := &Claims{
-		Username: creds.Username,
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: expirationTime.Unix(),
-		},
-	}
+	token, err := handler.SetToken(creds.Username, w)
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err := token.SignedString(jwtKey)
 	if err != nil {
 		handler.RespondError(w, http.StatusInternalServerError, err.Error())
-		return
 	}
 
-	http.SetCookie(w, &http.Cookie{
-		Name:    "token",
-		Value:   tokenString,
-		Expires: expirationTime,
-	})
+	handler.RespondJSON(w, http.StatusCreated, token)
+}
 
-	handler.RespondJSON(w, http.StatusCreated, "Token Created")
+func CheckAuth(w http.ResponseWriter, r *http.Request) {
+	if handler.IsAuthenticated(w, r) {
+		handler.RespondJSON(w, http.StatusFound, "You are authenticated !")
+	}
 }

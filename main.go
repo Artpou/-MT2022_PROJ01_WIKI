@@ -24,8 +24,10 @@ func handleRequests() {
 	log.Println("Starting development server at http://127.0.0.1:10000/")
 	router := mux.NewRouter().StrictSlash(true)
 
+	//Login
 	router.HandleFunc("/", homeLink)
 	router.HandleFunc("/api/login/", login).Methods("POST")
+	router.HandleFunc("/api/checkAuth/", checkAuth).Methods("GET")
 
 	//Comments
 	router.HandleFunc("/api/comments/", getComments).Methods("GET")
@@ -54,9 +56,21 @@ func handleRequests() {
 	log.Fatal(http.ListenAndServe(":10000", router))
 }
 
+//LOGIN
+
 func homeLink(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Welcome")
 }
+
+func login(w http.ResponseWriter, r *http.Request) {
+	controllers.Signin(db, w, r)
+}
+
+func checkAuth(w http.ResponseWriter, r *http.Request) {
+	controllers.CheckAuth(w, r)
+}
+
+//USER
 
 func getUsers(w http.ResponseWriter, r *http.Request) {
 	controllers.GetUsers(db, w, r)
@@ -88,10 +102,6 @@ func updateInfo(w http.ResponseWriter, r *http.Request) {
 
 func deleteSelf(w http.ResponseWriter, r *http.Request) {
 	controllers.DeleteSelf(w, r)
-}
-
-func login(w http.ResponseWriter, r *http.Request) {
-	controllers.Signin(db, w, r)
 }
 
 //ARTICLES

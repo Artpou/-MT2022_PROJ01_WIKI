@@ -2,8 +2,9 @@ package handler
 
 import (
 	"encoding/json"
-  "net/http"
-  "golang.org/x/crypto/bcrypt"
+	"net/http"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 func RespondJSON(w http.ResponseWriter, status int, payload interface{}) {
@@ -23,11 +24,11 @@ func RespondError(w http.ResponseWriter, code int, message string) {
 }
 
 func HashPassword(password string) (string, error) {
-    bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
-    return string(bytes), err
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
+	return string(bytes), err
 }
 
 func CheckPasswordHash(password, hash string) bool {
-    err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
-    return err == nil
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	return err == nil
 }
