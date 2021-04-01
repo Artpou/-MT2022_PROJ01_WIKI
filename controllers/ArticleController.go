@@ -46,6 +46,9 @@ func GetArticle(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateArticle(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+	if !handler.IsAuthenticated(w, r) {
+		return
+	}
 	rawArticle := models.Article{}
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&rawArticle); err != nil {
@@ -70,6 +73,9 @@ func CreateArticle(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateArticle(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+	if !handler.IsAuthenticated(w, r) {
+		return
+	}
 	vars := mux.Vars(r)
 	id := vars["id"]
 	uid64, err := strconv.ParseUint(id, 10, 64)
@@ -101,9 +107,12 @@ func UpdateArticle(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteArticle(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+	if !handler.IsAuthenticated(w, r) {
+		return
+	}
 	vars := mux.Vars(r)
 	id := vars["id"]
-	uid64, err  := strconv.ParseUint(id, 10, 64)
+	uid64, err := strconv.ParseUint(id, 10, 64)
 	if err != nil {
 		handler.RespondError(w, http.StatusBadRequest, err.Error())
 		return

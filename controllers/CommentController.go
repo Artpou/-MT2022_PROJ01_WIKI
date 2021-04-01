@@ -35,6 +35,9 @@ func GetComments(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateComment(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+	if !handler.IsAuthenticated(w, r) {
+		return
+	}
 	rawComment := models.Comment{}
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&rawComment); err != nil {
@@ -59,6 +62,9 @@ func CreateComment(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateComment(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+	if !handler.IsAuthenticated(w, r) {
+		return
+	}
 	vars := mux.Vars(r)
 	id := vars["id"]
 	uid64, err := strconv.ParseUint(id, 10, 64)
@@ -90,9 +96,12 @@ func UpdateComment(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteComment(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+	if !handler.IsAuthenticated(w, r) {
+		return
+	}
 	vars := mux.Vars(r)
 	id := vars["id"]
-	uid64, err  := strconv.ParseUint(id, 10, 64)
+	uid64, err := strconv.ParseUint(id, 10, 64)
 	if err != nil {
 		handler.RespondError(w, http.StatusBadRequest, err.Error())
 		return

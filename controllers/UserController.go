@@ -13,11 +13,14 @@ import (
 
 func GetUsers(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	users := []models.User{}
-  db.Find(&users)
+	db.Find(&users)
 	handler.RespondJSON(w, http.StatusOK, users)
 }
 
 func CreateUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+	if !handler.IsAuthenticated(w, r) {
+		return
+	}
 	rawUser := models.User{}
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&rawUser); err != nil {
@@ -43,8 +46,8 @@ func CreateUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 
 func GetUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	id 	 := vars["id"]
-	uid64, err  := strconv.ParseUint(id, 10, 64)
+	id := vars["id"]
+	uid64, err := strconv.ParseUint(id, 10, 64)
 	if err != nil {
 		handler.RespondError(w, http.StatusBadRequest, err.Error())
 		return
@@ -59,16 +62,19 @@ func GetUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+	if !handler.IsAuthenticated(w, r) {
+		return
+	}
 	vars := mux.Vars(r)
 	id := vars["id"]
-	uid64, err  := strconv.ParseUint(id, 10, 64)
+	uid64, err := strconv.ParseUint(id, 10, 64)
 	if err != nil {
 		handler.RespondError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 	uid := uint(uid64)
-	oldUser 	:= models.User{}
-	newUser 	:= models.User{}
+	oldUser := models.User{}
+	newUser := models.User{}
 	if err := db.First(&oldUser, models.User{ID: uid}).Error; err != nil {
 		handler.RespondError(w, http.StatusNotFound, err.Error())
 		return
@@ -80,7 +86,7 @@ func UpdateUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
-	if newUser.Password == ""{
+	if newUser.Password == "" {
 		handler.RespondError(w, http.StatusBadRequest, "Password is missing")
 		return
 	}
@@ -95,9 +101,12 @@ func UpdateUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+	if !handler.IsAuthenticated(w, r) {
+		return
+	}
 	vars := mux.Vars(r)
 	id := vars["id"]
-	uid64, err  := strconv.ParseUint(id, 10, 64)
+	uid64, err := strconv.ParseUint(id, 10, 64)
 	if err != nil {
 		handler.RespondError(w, http.StatusBadRequest, err.Error())
 		return
