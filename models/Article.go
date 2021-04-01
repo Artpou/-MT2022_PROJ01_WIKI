@@ -8,7 +8,7 @@ import (
 
 type Article struct {
 	ID           uint   `gorm:"primaryKey"`
-	User         User   `gorm:"foreignKey:AuthorID" `
+	User         User   `gorm:"foreignKey:AuthorID"`
 	AuthorID     uint   `gorm:"not null"`
 	Title        string `gorm:"not null;size:255"`
 	Content      string `gorm:"not null;size:10000"`

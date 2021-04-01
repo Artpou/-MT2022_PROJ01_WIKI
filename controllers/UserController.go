@@ -7,6 +7,7 @@ import (
 
 	"github.com/Artpou/wiki_golang/handler/respond"
 	"github.com/Artpou/wiki_golang/models"
+	"github.com/Artpou/wiki_golang/views"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 )
@@ -29,11 +30,11 @@ func CreateUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 	if rawUser.Username == "" {
-		respond.RespondError(w, http.StatusBadRequest, "Username is missing")
+		respond.RespondError(w, http.StatusBadRequest, views.FieldRequiered("Username"))
 		return
 	}
 	if rawUser.Password == "" {
-		respond.RespondError(w, http.StatusBadRequest, "Password is missing")
+		respond.RespondError(w, http.StatusBadRequest, views.FieldRequiered("Password"))
 		return
 	}
 	user := models.NewUser(rawUser.Username, rawUser.Password)
@@ -55,7 +56,7 @@ func GetUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	uid := uint(uid64)
 	user := models.User{}
 	if err := db.First(&user, models.User{ID: uid}).Error; err != nil {
-		respond.RespondError(w, http.StatusNotFound, err.Error())
+		respond.RespondError(w, http.StatusNotFound, views.FieldNotFound("User"))
 		return
 	}
 	respond.RespondJSON(w, http.StatusOK, user)
@@ -76,7 +77,7 @@ func UpdateUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	oldUser := models.User{}
 	newUser := models.User{}
 	if err := db.First(&oldUser, models.User{ID: uid}).Error; err != nil {
-		respond.RespondError(w, http.StatusNotFound, err.Error())
+		respond.RespondError(w, http.StatusNotFound, views.FieldNotFound("User"))
 		return
 	}
 	decoder := json.NewDecoder(r.Body)
@@ -87,7 +88,7 @@ func UpdateUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 
 	if newUser.Password == "" {
-		respond.RespondError(w, http.StatusBadRequest, "Password is missing")
+		respond.RespondError(w, http.StatusBadRequest, views.FieldRequiered("Password"))
 		return
 	}
 
@@ -114,7 +115,7 @@ func DeleteUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	uid := uint(uid64)
 	user := models.User{}
 	if err := db.First(&user, models.User{ID: uid}).Error; err != nil {
-		respond.RespondError(w, http.StatusNotFound, err.Error())
+		respond.RespondError(w, http.StatusNotFound, views.FieldNotFound("User"))
 		return
 	}
 	if err := db.Delete(&user).Error; err != nil {
