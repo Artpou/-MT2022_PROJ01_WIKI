@@ -47,7 +47,7 @@ func GetArticle(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 
 func CreateArticle(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	claims, err := jwt.GetClaims(r)
-	if err != nil || !CheckAuth(w, r) {
+	if !CheckAuth(w, r) || err != nil {
 		return
 	}
 
