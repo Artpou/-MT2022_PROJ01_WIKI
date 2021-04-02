@@ -23,6 +23,17 @@ Used to create an article.
 
 **Code** : `201 CREATED`
 
+```json
+{
+    "ID": 8,
+    "AuthorID": 2,
+    "Title": "Test",
+    "Content": "Lorem ispum blablabla",
+    "CreationDate": "Fri, 02 Apr 2021 18:10:53",
+    "LatestUpdate": "Fri, 02 Apr 2021 18:10:53"
+}
+```
+
 ## Error Response
 
 **Condition** : If any field is missed.

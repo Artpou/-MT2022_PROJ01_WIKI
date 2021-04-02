@@ -23,6 +23,17 @@ Used to create a comment.
 
 **Code** : `201 CREATED`
 
+```json
+{
+    "ID": 2,
+    "AuthorID": 1,
+    "ArticleID": 2,
+    "Content": "Test comment",
+    "CreationDate": "Fri, 02 Apr 2021 18:14:28",
+    "LatestUpdate": "Fri, 02 Apr 2021 18:14:28"
+}
+```
+
 ## Error Response
 
 **Condition** : If any field is missed.
