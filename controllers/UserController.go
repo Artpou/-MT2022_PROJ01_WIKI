@@ -126,7 +126,7 @@ func DeleteUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 		respond.RespondError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
-	respond.RespondJSON(w, http.StatusNoContent, nil)
+	respond.RespondJSON(w, http.StatusNoContent, views.DeleteUser())
 }
 
 func GetSelf(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
@@ -171,7 +171,7 @@ func UpdateSelf(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 
 	if newUser.Password == "" {
-		respond.RespondError(w, http.StatusBadRequest, "Password is missing")
+		respond.RespondError(w, http.StatusBadRequest, views.FieldNotFound("Password"))
 		return
 	}
 
@@ -203,5 +203,5 @@ func DeleteSelf(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 		respond.RespondError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
-	respond.RespondJSON(w, http.StatusNoContent, nil)
+	respond.RespondJSON(w, http.StatusNoContent, views.DeleteUser())
 }

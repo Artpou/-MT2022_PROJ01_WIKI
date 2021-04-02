@@ -11,3 +11,7 @@ func FieldNotFound(field string) string {
 func FieldRequiered(field string) string {
 	return fmt.Sprintf(`The field '%s' is missing`, field)
 }
+
+func FieldForbidden(field string) string {
+	return fmt.Sprintf(`Youd don't have the write to modify this %s`, field)
+}

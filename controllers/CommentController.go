@@ -89,7 +89,7 @@ func UpdateComment(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 		}
 		authorID := claims.ID
 		if oldComment.AuthorID != authorID {
-			respond.RespondError(w, http.StatusForbidden, "You don't have permission to update this comment")
+			respond.RespondError(w, http.StatusForbidden, views.FieldForbidden("Comment"))
 			return
 		}
 	}
@@ -134,7 +134,7 @@ func DeleteComment(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 		}
 		authorID := claims.ID
 		if comment.AuthorID != authorID {
-			respond.RespondError(w, http.StatusForbidden, "You don't have permission to delete this comment")
+			respond.RespondError(w, http.StatusForbidden, views.FieldForbidden("Comment"))
 			return
 		}
 	}
@@ -142,5 +142,5 @@ func DeleteComment(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 		respond.RespondError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
-	respond.RespondJSON(w, http.StatusNoContent, nil)
+	respond.RespondJSON(w, http.StatusNoContent, views.DeleteComment())
 }
