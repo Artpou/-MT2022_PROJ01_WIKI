@@ -17,14 +17,19 @@ go run main.go
 
 ## Get Started
 
+* To start the API, use the **go run main.go** command.
 * You can execute all requests in non-user-restricted endpoints without a token.
 * To create an account, use the [Create User](/docs/user_add.md) route.
 * Then, use the [Login request](/docs/login.md) route to get a JWT Token.
 * You can then use this token as "Bearer Token" Authentication to have access to user-restricted routes, such as article creation and edition.
 * Always use raw JSON data for POST and PUT requests instead of form data.
 * Admin access :
-* Username : admin
-* Password : admin
+```json
+{
+    "Username" : "admin",
+    "Password" : "admin"
+}
+```
 
 ## Contributors
  
