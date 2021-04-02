@@ -203,5 +203,5 @@ func DeleteSelf(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 		respond.RespondError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
-	respond.RespondJSON(w, http.StatusNoContent, views.DeleteUser())
+	respond.RespondJSON(w, http.StatusOK, views.DeleteUser())
 }
