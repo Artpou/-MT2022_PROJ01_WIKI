@@ -26,9 +26,9 @@ type ArticleWithComments struct {
 	Comments []Comment
 }
 
-func NewArticle(title string, content string) *Article {
+func NewArticle(title string, content string, authorID uint) *Article {
 	article := Article{Title: title, Content: content}
-	article.AuthorID = 2
+	article.AuthorID = authorID
 	article.CreationDate = JSONTime(time.Now())
 	article.LatestUpdate = JSONTime(time.Now())
 	return &article

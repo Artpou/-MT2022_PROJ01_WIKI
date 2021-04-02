@@ -46,9 +46,11 @@ func GetArticle(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateArticle(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	if !CheckAuth(w, r) {
+	claims, err := jwt.GetClaims(r)
+	if err != nil || !CheckAuth(w, r) {
 		return
 	}
+
 	rawArticle := models.Article{}
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&rawArticle); err != nil {
@@ -64,7 +66,7 @@ func CreateArticle(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 		respond.RespondError(w, http.StatusBadRequest, views.FieldRequiered("Content"))
 		return
 	}
-	article := models.NewArticle(rawArticle.Title, rawArticle.Content)
+	article := models.NewArticle(rawArticle.Title, rawArticle.Content, claims.ID)
 	if err := db.Save(&article).Error; err != nil {
 		respond.RespondError(w, http.StatusInternalServerError, err.Error())
 		return
