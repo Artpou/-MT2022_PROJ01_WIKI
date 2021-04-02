@@ -16,6 +16,7 @@ Used to create/register a User.
     "Password": "[password in plain text]"
 }
 ```
+If you use postman, you must complete the request in json in body>raw
 
 ## Success Response
 
