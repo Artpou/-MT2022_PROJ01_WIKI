@@ -14,7 +14,7 @@ import (
 )
 
 func GetUsers(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	if !IsAdmin(w, r) {
+	if !CheckAdmin(w, r) {
 		return
 	}
 	users := []models.User{}
@@ -47,7 +47,7 @@ func CreateUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 }
 
 func GetUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	if !IsAdmin(w, r) {
+	if !CheckAdmin(w, r) {
 		return
 	}
 	vars := mux.Vars(r)
@@ -67,7 +67,7 @@ func GetUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	if !IsAdmin(w, r) {
+	if !CheckAdmin(w, r) {
 		return
 	}
 	vars := mux.Vars(r)
@@ -106,7 +106,7 @@ func UpdateUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	if !IsAdmin(w, r) {
+	if !CheckAdmin(w, r) {
 		return
 	}
 	vars := mux.Vars(r)
@@ -130,7 +130,7 @@ func DeleteUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 }
 
 func GetSelf(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	if !IsAuthenticated(w, r) {
+	if !CheckAuth(w, r) {
 		return
 	}
 	claims, err := jwt.GetClaims(r)
@@ -148,7 +148,7 @@ func GetSelf(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateSelf(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	if !IsAuthenticated(w, r) {
+	if !CheckAuth(w, r) {
 		return
 	}
 	claims, err := jwt.GetClaims(r)
@@ -185,7 +185,7 @@ func UpdateSelf(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteSelf(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	if !IsAuthenticated(w, r) {
+	if !CheckAuth(w, r) {
 		return
 	}
 	claims, err := jwt.GetClaims(r)
