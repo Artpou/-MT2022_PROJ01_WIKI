@@ -60,6 +60,11 @@ func CreateComment(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 		respond.RespondError(w, http.StatusBadRequest, views.FieldRequiered("Content"))
 		return
 	}
+	article := models.Article{}
+	if err := db.First(&article, models.Article{ID: rawComment.ArticleID}).Error; err != nil {
+		respond.RespondError(w, http.StatusNotFound, views.FieldNotFound("Article"))
+		return
+	}
 	comment := models.NewComment(rawComment.ArticleID, rawComment.Content, claims.ID)
 	if err := db.Save(&comment).Error; err != nil {
 		respond.RespondError(w, http.StatusInternalServerError, err.Error())
