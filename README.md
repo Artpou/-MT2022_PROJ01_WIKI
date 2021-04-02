@@ -7,6 +7,16 @@ The api use JWT Token to login for create article and moderate comments.
 
 You can access to all the documentation [Here](docs/documentation.md)
 
+## Summary
+
+Libraries used for the API :
+
+* [gorm](github.com/jinzhu/gorm)
+* [jwt](github.com/dgrijalva/jwt-go)
+* [mux](github.com/gorilla/mux)
+* [mysql](github.com/jinzhu/gorm/dialects/mysql)
+* [bcrypt](golang.org/x/crypto/bcrypt)
+
 ## Use
 
 Launch project with this command in the repo
