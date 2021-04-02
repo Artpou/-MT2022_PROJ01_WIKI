@@ -15,11 +15,16 @@ Launch project with this command in the repo
 go run main.go
 ```
 
-When you connect at api/login you get BearerToken, enter this in Authorization Panel in Postman.
+## Get Started
 
-Admin access for text :
-* Username : admin2  
-* Password: admin
+* You can execute all requests in non-user-restricted endpoints without a token.
+* To create an account, use the [Create User](/docs/user_add.md) route.
+* Then, use the [Login request](/docs/login.md) route to get a JWT Token.
+* You can then use this token as "Bearer Token" Authentication to have access to user-restricted routes, such as article creation and edition.
+* Always use raw JSON data for POST and PUT requests instead of form data.
+* Admin access :
+* Username : admin
+* Password : admin
 
 ## Contributors
  
