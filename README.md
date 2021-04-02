@@ -7,6 +7,17 @@ The api use JWT Token to login for create article and moderate comments.
 
 You can access to all the documentation [Here](docs/documentation.md)
 
+## Use
+
+Launch project with this command in the repo
+
+```bash
+go run main.go
+```
+
+When you connect at api/login you get BearerToken, enter this in Authorization Panel in Postman.
+
+
 ## Contributors
  
 * Arthur Poulin
