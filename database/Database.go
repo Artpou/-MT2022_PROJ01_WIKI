@@ -2,25 +2,30 @@ package database
 
 import (
 	"log"
-
+	"os"
+	"io/ioutil"
+	"encoding/json"
 	"github.com/Artpou/wiki_golang/models"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
-
+type dbConfig struct {
+	dbServer  	string
+	dbName    	string
+	dbUsername  string
+	dbPassword  string
+	dbPort  	  string
+}
 var db *gorm.DB
 var err error
-var dbServer, dbName, dbUsername, dbPassword, dbPort, dbConn string
 
 func InitDb() *gorm.DB {
-	dbServer = "sql11.freemysqlhosting.net"
-	dbName = "sql11395463"
-	dbUsername = "sql11395463"
-	dbPassword = "5mRSPiqM9M"
-	dbPort = "3306"
-	dbConn = dbUsername + ":" + dbPassword + "@tcp(" + dbServer + ":" + dbPort + ")/" + dbName + "?charset=utf8&parseTime=True"
-
+	config := dbConfig{}
+	jsonFile, _ := os.Open("config.json")
+	byteValue, _ := ioutil.ReadAll(jsonFile)
+	json.Unmarshal([]byte(byteValue), &config)
+	dbConn := config.dbUsername + ":" + config.dbPassword + "@tcp(" + config.dbServer + ":" + config.dbPort + ")/" + config.dbName + "?charset=utf8&parseTime=True"
 	db, err = gorm.Open("mysql", dbConn)
 
 	if err != nil {
