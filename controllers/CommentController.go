@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/Artpou/wiki_golang/handler/respond"
 	"github.com/Artpou/wiki_golang/handler/jwt"
+	"github.com/Artpou/wiki_golang/handler/respond"
 	"github.com/Artpou/wiki_golang/models"
 	"github.com/Artpou/wiki_golang/views"
 	"github.com/gorilla/mux"
@@ -81,15 +81,17 @@ func UpdateComment(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 		respond.RespondError(w, http.StatusNotFound, views.FieldNotFound("Comment"))
 		return
 	}
-	claims, err := jwt.GetClaims(r)
-	if err != nil {
-		respond.RespondError(w, http.StatusUnauthorized, err.Error())
-		return
-	}
-	authorID := claims.ID
-	if oldComment.AuthorID != authorID{
-		respond.RespondError(w, http.StatusForbidden, "You don't have permission to update this comment")
-		return
+	if !IsAdmin(w, r) {
+		claims, err := jwt.GetClaims(r)
+		if err != nil {
+			respond.RespondError(w, http.StatusUnauthorized, err.Error())
+			return
+		}
+		authorID := claims.ID
+		if oldComment.AuthorID != authorID {
+			respond.RespondError(w, http.StatusForbidden, "You don't have permission to update this comment")
+			return
+		}
 	}
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&newComment); err != nil {
@@ -124,15 +126,17 @@ func DeleteComment(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 		respond.RespondError(w, http.StatusNotFound, views.FieldNotFound("Comment"))
 		return
 	}
-	claims, err := jwt.GetClaims(r)
-	if err != nil {
-		respond.RespondError(w, http.StatusUnauthorized, err.Error())
-		return
-	}
-	authorID := claims.ID
-	if comment.AuthorID != authorID{
-		respond.RespondError(w, http.StatusForbidden, "You don't have permission to delete this comment")
-		return
+	if !IsAdmin(w, r) {
+		claims, err := jwt.GetClaims(r)
+		if err != nil {
+			respond.RespondError(w, http.StatusUnauthorized, err.Error())
+			return
+		}
+		authorID := claims.ID
+		if comment.AuthorID != authorID {
+			respond.RespondError(w, http.StatusForbidden, "You don't have permission to delete this comment")
+			return
+		}
 	}
 	if err := db.Delete(&comment).Error; err != nil {
 		respond.RespondError(w, http.StatusInternalServerError, err.Error())

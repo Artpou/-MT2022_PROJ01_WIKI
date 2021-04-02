@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/Artpou/wiki_golang/handler/respond"
 	"github.com/Artpou/wiki_golang/handler/jwt"
+	"github.com/Artpou/wiki_golang/handler/respond"
 	"github.com/Artpou/wiki_golang/models"
 	"github.com/Artpou/wiki_golang/views"
 	"github.com/gorilla/mux"
@@ -23,9 +23,6 @@ func GetUsers(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	if !IsAdmin(w, r) {
-		return
-	}
 	rawUser := models.User{}
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&rawUser); err != nil {
@@ -159,7 +156,7 @@ func UpdateSelf(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 		respond.RespondError(w, http.StatusUnauthorized, err.Error())
 		return
 	}
-		username := claims.Username
+	username := claims.Username
 	oldUser := models.User{}
 	newUser := models.User{}
 	if err := db.First(&oldUser, models.User{Username: username}).Error; err != nil {

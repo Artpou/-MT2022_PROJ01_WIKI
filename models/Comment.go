@@ -9,9 +9,9 @@ import (
 type Comment struct {
 	ID           uint    `gorm:"primaryKey"`
 	AuthorID     uint    `gorm:"not null"`
-	User         User    `gorm:"foreignKey:AuthorID"`
+	User         User    `gorm:"foreignKey:AuthorID" json:"-"`
 	ArticleID    uint    `gorm:"not null"`
-	Article      Article `gorm:"foreignKey:ArticleID"`
+	Article      Article `gorm:"foreignKey:ArticleID" json:"-"`
 	Content      string  `gorm:"not null;size:500"`
 	CreationDate JSONTime
 	LatestUpdate JSONTime
