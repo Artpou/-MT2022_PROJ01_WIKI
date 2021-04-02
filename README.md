@@ -17,6 +17,9 @@ go run main.go
 
 When you connect at api/login you get BearerToken, enter this in Authorization Panel in Postman.
 
+Admin access for text :
+* Username : admin2  
+* Password: admin
 
 ## Contributors
  
