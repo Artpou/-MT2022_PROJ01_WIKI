@@ -9,5 +9,5 @@ func FieldNotFound(field string) string {
 }
 
 func FieldRequiered(field string) string {
-	return fmt.Sprintf(`The field "%s is missing`, field)
+	return fmt.Sprintf(`The field '%s' is missing`, field)
 }

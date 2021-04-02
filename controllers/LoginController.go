@@ -56,7 +56,7 @@ func Signin(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 }
 
 func Logout(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	if !CheckAuth(w, r) {
+	if !IsAuthenticated(w, r) {
 		return
 	}
 	jwt.DeleteToken(w)
@@ -65,18 +65,16 @@ func Logout(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 
 func CheckAuth(w http.ResponseWriter, r *http.Request) bool {
 	if !IsAuthenticated(w, r) {
-		respond.RespondError(w, http.StatusUnauthorized, views.NeedAdministrator())
+		respond.RespondError(w, http.StatusUnauthorized, views.NeedAuthentication())
 		return false
 	}
-	respond.RespondJSON(w, http.StatusFound, views.Authenticated())
 	return true
 }
 
 func CheckAdmin(w http.ResponseWriter, r *http.Request) bool {
 	if !IsAdmin(w, r) {
-		respond.RespondError(w, http.StatusUnauthorized, views.NeedAuthentication())
+		respond.RespondError(w, http.StatusUnauthorized, views.NeedAdministrator())
 		return false
 	}
-	respond.RespondJSON(w, http.StatusFound, views.Administrator())
 	return true
 }

@@ -17,6 +17,7 @@ func HandleRequests() {
 	log.Println("Starting development server at http://127.0.0.1:10000/")
 	router := mux.NewRouter().StrictSlash(true)
 	db = database.InitDb()
+
 	//Login
 	router.HandleFunc("/", HomeLink)
 	router.HandleFunc("/api/login/", Login).Methods("POST")

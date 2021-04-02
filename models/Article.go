@@ -9,7 +9,7 @@ import (
 type Article struct {
 	ID           uint   `gorm:"primaryKey"`
 	AuthorID     uint   `gorm:"not null"`
-	User         User   `gorm:"foreignKey:AuthorID"`
+	User         User   `gorm:"foreignKey:AuthorID" json:"-"`
 	Title        string `gorm:"not null;size:255"`
 	Content      string `gorm:"not null;size:10000"`
 	CreationDate JSONTime
@@ -22,7 +22,7 @@ type ArticleWithOwner struct {
 }
 
 type ArticleWithComments struct {
-	Article  *ArticleWithOwner
+	Article
 	Comments []Comment
 }
 
@@ -34,13 +34,8 @@ func NewArticle(title string, content string) *Article {
 	return &article
 }
 
-func NewArticleWithOwner(article Article) *ArticleWithOwner {
-	articleOwner := ArticleWithOwner{Owner: article.User.Username, Article: article}
-	return &articleOwner
-}
-
 func NewArticleWithComments(article Article, comments []Comment) *ArticleWithComments {
-	articleComments := ArticleWithComments{Article: NewArticleWithOwner(article), Comments: comments}
+	articleComments := ArticleWithComments{Article: article, Comments: comments}
 	return &articleComments
 }
 
