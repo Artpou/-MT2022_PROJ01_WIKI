@@ -29,7 +29,18 @@ If you use postman, you must complete the request in json in body>raw
 
 ```json
 {
-    "token": "93144b288eb1fdccbe46d6fc0f241a51766ecd3d"
+    "Name": "token",
+    "Value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwidXNlcm5hbWUiOiJnbWFyY2VsIiwicm9sZSI6MCwiZXhwIjoxNjE3MzgyNjY3fQ.2ziZ5UH8tU8sftYy1yKQ81Q4kFswKIx0vSKVm8GNGKo",
+    "Path": "",
+    "Domain": "",
+    "Expires": "2021-04-02T18:57:47.470642+02:00",
+    "RawExpires": "",
+    "MaxAge": 0,
+    "Secure": false,
+    "HttpOnly": false,
+    "SameSite": 0,
+    "Raw": "",
+    "Unparsed": null
 }
 ```
 
