@@ -11,11 +11,11 @@ You can access to all the documentation [Here](docs/documentation.md)
 
 Libraries used for the API :
 
-* [gorm](github.com/jinzhu/gorm)
-* [jwt](github.com/dgrijalva/jwt-go)
-* [mux](github.com/gorilla/mux)
-* [mysql](github.com/jinzhu/gorm/dialects/mysql)
-* [bcrypt](golang.org/x/crypto/bcrypt)
+* [gorm](https://github.com/jinzhu/gorm)
+* [jwt](https://github.com/dgrijalva/jwt-go)
+* [mux](https://github.com/gorilla/mux)
+* [mysql](https://github.com/jinzhu/gorm/dialects/mysql)
+* [bcrypt](https://golang.org/x/crypto/bcrypt)
 
 ## Use
 
