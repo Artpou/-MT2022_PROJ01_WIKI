@@ -20,13 +20,12 @@ Used to show a comment.
 
 ```json
     {
-        "comment": {
-            "id": 53,
-            "content_comment": "This is the content of the comment",
-            "date_comment": "2020-10-12 11:11:11",
-            "id_user": 15,
-            "id_article" : 123
-        }
+        "ID": 1,
+        "AuthorID": 3,
+        "ArticleID": 7,
+        "Content": "Commentaire test 2",
+        "CreationDate": "Mon, 01 Jan 0001 00:00:00",
+        "LatestUpdate": "Mon, 01 Jan 0001 00:00:00"
     }
 ```
 

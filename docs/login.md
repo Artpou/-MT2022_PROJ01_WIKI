@@ -12,8 +12,8 @@ Used to collect a Token for a registered User.
 
 ```json
 {
-    "username": "[valid email address]",
-    "password": "[password in plain text]"
+    "Username": "[valid username]",
+    "Password": "[password in plain text]"
 }
 ```
 

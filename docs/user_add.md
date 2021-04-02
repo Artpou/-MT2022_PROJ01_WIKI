@@ -12,8 +12,8 @@ Used to create/register a User.
 
 ```json
 {
-    "username": "[valid email address or username]",
-    "password": "[password in plain text]"
+    "Username": "[valid  username]",
+    "Password": "[password in plain text]"
 }
 ```
 

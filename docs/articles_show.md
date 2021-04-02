@@ -21,31 +21,20 @@ Used to show all articles.
 ```json
 [
     {
-        "article": {
-            "id": 123,
-            "title_article": "I am the first article",
-            "content_article": "This is my content",
-            "date_article": "2020-10-12 11:11:11",
-            "id_user": 11
-        }
+        "ID": 1,
+        "AuthorID": 1,
+        "Title": "Article 1",
+        "Content": "Lorem Ipsum",
+        "CreationDate": "Thu, 01 Apr 2021 17:47:51",
+        "LatestUpdate": "Thu, 01 Apr 2021 17:47:51"
     },
     {
-        "article": {
-            "id": 124,
-            "title_article": "I am the second article",
-            "content_article": "This is my content",
-            "date_article": "2020-11-12 09:09:09",
-            "id_user": 18
-        }
-    },
-    {
-        "article": {
-            "id": 125,
-            "title_article": "I am the third article",
-            "content_article": "This is my content",
-            "date_article": "2020-12-12 10:10:10",
-            "id_user": 18
-        }
+        "ID": 2,
+        "AuthorID": 1,
+        "Title": "Article 2",
+        "Content": "Lorem Ipsum",
+        "CreationDate": "Thu, 01 Apr 2021 13:23:12",
+        "LatestUpdate": "Thu, 01 Apr 2021 17:47:51"
     }
 ]
 ```

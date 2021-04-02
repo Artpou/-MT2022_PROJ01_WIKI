@@ -12,8 +12,8 @@ Used to update an article.
 
 ```json
 {
-    "title_article": "[title of the article]",
-    "content_article": "[content of the article]"
+    "Title": "[title of the article]",
+    "Content": "[content of the article]"
 }
 ```
 
@@ -64,8 +64,6 @@ User is in relation to the article requested:
 
 ```json
 {
-    "content_article": [
-        "This field is required."
-    ]
+    "error": "The field 'Content' is missing"
 }
 ```

@@ -12,10 +12,8 @@ Used to create a comment.
 
 ```json
 {
-    "content_comment": "This is the content of the comment",
-    "date_comment": "2020-10-12 11:11:11",
-    "id_user": 15,
-    "id_article": 123
+    "ArticleID": 1,
+    "Content": "This is the content of the comment"
 }
 ```
 
