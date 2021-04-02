@@ -12,9 +12,8 @@ Used to create an article.
 
 ```json
 {
-    "title_article": "[title of the article]",
-    "content_article": "[content of the article]",
-    "id_user": "[id of the current user]"
+    "Title": "[title of the article]",
+    "Content": "[content of the article]"
 }
 ```
 
@@ -34,9 +33,7 @@ Used to create an article.
 
 ```json
 {
-    "title_article": [
-        "This field is required."
-    ]
+    "error": "The field 'Content' is missing"
 }
 ```
 ### Or
@@ -45,4 +42,10 @@ Used to create an article.
 
 **Code** : `403 FORBIDDEN`
 
-**Content** : {}
+**Content** : 
+
+```json
+{
+    "error": "you need to be authenticated to do this"
+}
+```

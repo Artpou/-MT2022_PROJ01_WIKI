@@ -42,20 +42,25 @@ User is in relation to the comment requested:
 
 **Code** : `403 FORBIDDEN`
 
+**Content** :
+
 ```json
-{"detail": "You do not have permission to perform this action."}
+{
+    "error": "you need to be authenticated to do this"
+}
 ```
 
 ## Or
 
-**Condition** : If 'content_comment' field is missing.
+**Condition** : If 'Content' field is missing.
 
 **Code** : `400 BAD REQUEST`
 
+**Content** :
+
 ```json
 {
-    "content_comment": [
-        "This field is required."
-    ]
+    "error": "The field 'Content' is missing"
 }
 ```
+

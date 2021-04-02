@@ -33,9 +33,7 @@ Used to create/register a User.
 
 ```json
 {
-    "username": [
-        "This field is required."
-    ]
+    "error": "The field 'Username' is missing"
 }
 ```
 
@@ -45,9 +43,3 @@ Used to create/register a User.
 **Condition** : If username is already taken.
 
 **Code** : `400 BAD REQUEST`
-
-**Content example** :
-
-```json
-{"detail": "This username is already taken."}
-```

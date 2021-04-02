@@ -35,9 +35,7 @@ Used to create a comment.
 
 ```json
 {
-    "content_comment": [
-        "This field is required."
-    ]
+    "error": "The field 'Content' is missing"
 }
 ```
 ### Or
@@ -46,4 +44,10 @@ Used to create a comment.
 
 **Code** : `403 FORBIDDEN`
 
-**Content** : {}
+**Content** : 
+
+```json
+{
+    "error": "you need to be authenticated to do this"
+}
+```

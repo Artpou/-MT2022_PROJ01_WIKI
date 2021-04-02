@@ -8,16 +8,6 @@ Used to show all comments for an article.
 
 **Auth required** : NO
 
-**Data constraints** :
-
-{
-    "id_article": "[id of the article you want the comments from]"
-}
-
-## Success Response
-
-**Condition** : If article is not missing and exists.
-
 **Code** : `200 OK`
 
 **Content Example** :
@@ -52,27 +42,4 @@ Used to show all comments for an article.
         }
     }
 ]
-```
-## Error Response
-
-**Condition** : If article does not exist.
-
-**Code** : `404 NOT FOUND`
-
-**Content** : {}
-
-### Or
-
-**Condition** : If 'id_article' field is missing.
-
-**Code** : `400 BAD REQUEST`
-
-**Content** : 
- 
-```json
-{
-    "id_article": [
-        "This field is required."
-    ]
-}
 ```

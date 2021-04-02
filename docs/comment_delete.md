@@ -28,7 +28,13 @@ User is in relation to the comment requested:
 
 **Code** : `404 NOT FOUND`
 
-**Content** : {}
+**Content** :
+
+```json
+    {
+        "error": "This Comment cannot be found"
+    }
+```
 
 ## Or
 
@@ -37,5 +43,7 @@ User is in relation to the comment requested:
 **Code** : `403 FORBIDDEN`
 
 ```json
-{"detail": "You do not have permission to perform this action."}
+{
+    "error": "you need to be authenticated to do this"
+}
 ```

@@ -36,4 +36,10 @@ Used to show a comment.
 
 **Code** : `404 NOT FOUND`
 
-**Content** : `{}`
+**Content** :
+
+```json
+    {
+        "error": "This Comment cannot be found"
+    }
+```

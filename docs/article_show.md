@@ -20,13 +20,13 @@ Used to show an article.
 
 ```json
     {
-        "article": {
-            "id": 123,
-            "title_article": "I am the article",
-            "content_article": "This is my content",
-            "date_article": "2020-10-12 11:11:11",
-            "id_user": 11
-        }
+        "ID": 1,
+        "AuthorID": 1,
+        "Title": "jk",
+        "Content": "trutyru",
+        "CreationDate": "Thu, 01 Apr 2021 17:47:51",
+        "LatestUpdate": "Thu, 01 Apr 2021 17:47:51",
+        "Comments": []
     }
 ```
 
@@ -36,4 +36,10 @@ Used to show an article.
 
 **Code** : `404 NOT FOUND`
 
-**Content** : `{}`
+**Content** : 
+
+```json
+    {
+        "error": "This Article cannot be found"
+    }
+```
