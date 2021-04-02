@@ -43,7 +43,7 @@ func CreateUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 		respond.RespondError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
-	respond.RespondJSON(w, http.StatusCreated, user)
+	respond.RespondJSON(w, http.StatusCreated, models.NewUserWithoutPassword(user))
 }
 
 func GetUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
