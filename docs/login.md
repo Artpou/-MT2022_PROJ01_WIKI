@@ -17,6 +17,8 @@ Used to collect a Token for a registered User.
 }
 ```
 
+
+
 ## Success Response
 
 **Condition** : If 'username' and 'password' combination is correct.
