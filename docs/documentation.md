@@ -7,7 +7,7 @@
 * Then, use the [Login request](/docs/login.md) route to get a JWT Token.
 * You can then use this token as "Bearer Token" Authentication to have access to user-restricted routes, such as article creation and edition.
 * Always use raw JSON data for POST and PUT requests instead of form data.
-* You can use the Admin account using Username Admin and Password admin
+* You can use the Admin account using Username admin and Password admin
 
 ## Open Endpoints
 
