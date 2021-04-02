@@ -37,6 +37,11 @@ func GetComments(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateComment(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+	claims, err := jwt.GetClaims(r)
+	if !CheckAuth(w, r) || err != nil {
+		return
+	}
+
 	if !CheckAuth(w, r) {
 		return
 	}
@@ -55,7 +60,7 @@ func CreateComment(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 		respond.RespondError(w, http.StatusBadRequest, views.FieldRequiered("Content"))
 		return
 	}
-	comment := models.NewComment(rawComment.ArticleID, rawComment.Content)
+	comment := models.NewComment(rawComment.ArticleID, rawComment.Content, claims.ID)
 	if err := db.Save(&comment).Error; err != nil {
 		respond.RespondError(w, http.StatusInternalServerError, err.Error())
 		return

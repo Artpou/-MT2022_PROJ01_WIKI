@@ -17,9 +17,9 @@ type Comment struct {
 	LatestUpdate JSONTime
 }
 
-func NewComment(articleID uint, content string) *Comment {
+func NewComment(articleID uint, content string, authorID uint) *Comment {
 	comment := Comment{Content: content, ArticleID: articleID}
-	comment.AuthorID = 1
+	comment.AuthorID = authorID
 	comment.CreationDate = JSONTime(time.Now())
 	comment.LatestUpdate = JSONTime(time.Now())
 	return &comment
