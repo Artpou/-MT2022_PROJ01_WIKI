@@ -37,7 +37,7 @@ func GetComments(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateComment(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	if !IsAuthenticated(w, r) {
+	if !CheckAuth(w, r) {
 		return
 	}
 	rawComment := models.Comment{}
@@ -64,7 +64,7 @@ func CreateComment(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateComment(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	if !IsAuthenticated(w, r) {
+	if !CheckAuth(w, r) {
 		return
 	}
 	vars := mux.Vars(r)
@@ -110,7 +110,7 @@ func UpdateComment(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteComment(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	if !IsAuthenticated(w, r) {
+	if !CheckAuth(w, r) {
 		return
 	}
 	vars := mux.Vars(r)

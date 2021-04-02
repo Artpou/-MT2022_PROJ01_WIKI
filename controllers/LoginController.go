@@ -19,36 +19,12 @@ type Credentials struct {
 
 func IsAuthenticated(w http.ResponseWriter, r *http.Request) bool {
 	tkn, err := jwt.GetToken(r)
-
-	if err != nil {
-		respond.RespondError(w, http.StatusUnauthorized, views.NeedAuthentication())
-		return false
-	}
-	if !tkn.Valid {
-		respond.RespondError(w, http.StatusUnauthorized, views.InvalidToken())
-		return false
-	}
-
-	return true
+	return err == nil && tkn.Valid
 }
 
 func IsAdmin(w http.ResponseWriter, r *http.Request) bool {
-	if !IsAuthenticated(w, r) {
-		return false
-	}
 	claims, err := jwt.GetClaims(r)
-
-	if err != nil {
-		respond.RespondError(w, http.StatusUnauthorized, err.Error())
-		return false
-	}
-	role := claims.Role
-	if role != models.AdminRole {
-		respond.RespondError(w, http.StatusUnauthorized, views.NeedAdministrator())
-		return false
-	}
-
-	return true
+	return IsAuthenticated(w, r) && err == nil && claims.Role == models.AdminRole
 }
 
 func Signin(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
@@ -80,21 +56,27 @@ func Signin(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 }
 
 func Logout(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	if !IsAuthenticated(w, r) {
+	if !CheckAuth(w, r) {
 		return
 	}
 	jwt.DeleteToken(w)
 	respond.RespondJSON(w, http.StatusFound, views.Logout())
 }
 
-func CheckAuth(w http.ResponseWriter, r *http.Request) {
-	if IsAuthenticated(w, r) {
-		respond.RespondJSON(w, http.StatusFound, views.Authenticated())
+func CheckAuth(w http.ResponseWriter, r *http.Request) bool {
+	if !IsAuthenticated(w, r) {
+		respond.RespondError(w, http.StatusUnauthorized, views.NeedAdministrator())
+		return false
 	}
+	respond.RespondJSON(w, http.StatusFound, views.Authenticated())
+	return true
 }
 
-func CheckAdmin(w http.ResponseWriter, r *http.Request) {
-	if IsAdmin(w, r) {
-		respond.RespondJSON(w, http.StatusFound, views.Administrator())
+func CheckAdmin(w http.ResponseWriter, r *http.Request) bool {
+	if !IsAdmin(w, r) {
+		respond.RespondError(w, http.StatusUnauthorized, views.NeedAuthentication())
+		return false
 	}
+	respond.RespondJSON(w, http.StatusFound, views.Administrator())
+	return true
 }

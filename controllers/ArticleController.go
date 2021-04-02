@@ -46,7 +46,7 @@ func GetArticle(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateArticle(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	if !IsAuthenticated(w, r) {
+	if !CheckAuth(w, r) {
 		return
 	}
 	rawArticle := models.Article{}
@@ -73,7 +73,7 @@ func CreateArticle(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateArticle(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	if !IsAuthenticated(w, r) {
+	if !CheckAuth(w, r) {
 		return
 	}
 	vars := mux.Vars(r)
@@ -119,7 +119,7 @@ func UpdateArticle(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteArticle(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	if !IsAuthenticated(w, r) {
+	if !CheckAuth(w, r) {
 		return
 	}
 	vars := mux.Vars(r)
